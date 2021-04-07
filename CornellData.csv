@@ -1,0 +1,16 @@
+﻿Central campus?,Arts quad?,Has eating area inside?,Is that eating area dining hall?,East Campus?,Eng quad?,Dorm?,Big auditorium?,Has parking lot?,Need reservation to use?,Has gym?,Ag quad?,Off campus?,Has elevator?,Freshman dorm?,Office hour held?,Did rbg live here?,Is it connected to other buildings?,Does it have taco tuesday?,Building
+Y,N,Y,N,N,Y,N,Y,N,N,N,N,N,Y,N,N,,Y,N,Duffield Hall
+Y,Y,N,,N,N,N,Y,N,N,N,N,N,Y,N,Y,,Y,,Goldwin Smith Hall
+Y,Y,Y,N,N,N,N,N,N,N,N,N,N,Y,N,N,,N,N,Olin Library
+Y,N,Y,N,N,N,N,N,N,N,N,Y,N,Y,N,N,,N,N,Mann Library
+Y,N,Y,N,N,Y,N,N,N,N,N,N,N,Y,N,Y,,N,N,Gates Hall
+Y,Y,N,,N,N,N,N,Y,N,N,N,N,N,N,N,,Y,,Uris Library
+Y,N,N,,N,N,N,N,Y,Y,Y,N,N,N,N,N,,N,,Barton Hall
+Y,N,Y,N,N,N,N,Y,Y,N,N,N,N,Y,N,N,,Y,N,Statler Hall
+N,N,Y,Y,N,N,N,N,Y,N,N,N,N,Y,N,N,,N,N,RPCC
+N,N,Y,Y,N,N,Y,N,N,N,N,N,N,Y,N,N,N,N,Y,Rose House
+N,N,N,,N,N,Y,N,Y,N,N,N,Y,Y,N,N,N,N,,Cascadilla Hall
+N,N,N,,N,N,Y,N,Y,N,N,N,N,Y,Y,N,Y,N,,Dickson Hall
+Y,N,Y,N,N,N,N,Y,N,N,N,N,N,N,N,Y,,Y,N,Kennedy Hall
+Y,N,N,,N,N,N,N,Y,Y,N,N,N,Y,N,N,,N,,Cornell Health
+N,N,N,,N,Y,N,N,N,N,N,N,N,Y,N,Y,,Y,,Rhodes
