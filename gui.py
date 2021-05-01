@@ -1,5 +1,6 @@
 import decisiontree
 import tkinter as tk
+from functools import partial
 
 #information for the decision tree (dataset and helper functions)
 #taken from one of the evaluation.py datasets for now
@@ -65,13 +66,29 @@ questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,2
 
 tree = create_tree = decisiontree.create_Tree(dataset, 1, questions, question_to_index, question_to_yes_answers)
 
+#trying the gui (not working yet)
 window = tk.Tk()
-
-start_message = tk.Label(master = window, text = "Start")
+start_message = tk.Label(master = window, text = "Welcome! The game will start shortly")
 start_message.pack()
 
-start_button = tk.Button(master = window, text = "Press to start")
-start_button.pack()
+def getResult(node):
+  print(node.num)
+  global start_message
+  if node.yes == None and node.no == None:
+    city_result = city_to_num[node.num]
+    start_message.configure(text = "You should move to " + city_result + "!")
+  global tree
+  tree = node 
+  question_num = node.num
+  question = questions_to_num[question_num]
+  start_message.configure(text = question)
+
+question = questions_to_num[tree.num]
+start_message.configure(text = question)
+yes_button = tk.Button(master = window, text = "Yes", command = partial(getResult, tree.yes))
+yes_button.pack()
+no_button = tk.Button(master = window, text = "No", command = partial(getResult, tree.no))
+no_button.pack()
 
 window.mainloop()
 
