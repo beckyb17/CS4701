@@ -44,8 +44,8 @@ question_to_yes_answers = {1:1,2:1,3:0,4:0,5:1,6:2,7:3,8:4,9:5,10:6,11:0,12:1,13
 
 #dataset takes shape of
 #size | pop density | cost of living | industry | food | activity | |transporation | label
-train_set = [[1,1,0,0,0,1,2,0], [1,1,0,1,0,2,1,0], [1,1,0,3,5,6,1,0], [1,1,0,2,0,2,3,0],
-[1,1,0,3,0,0,3,1],[1,1,0,4,0,1,1,1],[1,1,0,1,2,3,3,1],[1,1,0,3,2,0,1,1],
+train_set = [[1,1,1,0,0,1,2,0], [1,1,1,1,0,2,1,0], [1,1,1,3,5,6,1,0], [1,1,1,2,0,2,3,0],
+[1,1,1,3,0,0,3,1],[1,1,1,4,0,1,1,1],[1,1,1,1,2,3,3,1],[1,1,1,3,2,0,1,1],
 [0,0,0,4,3,3,2,2],[0,0,0,4,0,5,0,2],[0,0,0,3,3,3,0,2],[0,0,0,3,4,6,2,2],
 [0,0,0,3,2,3,0,3],[0,0,0,4,0,5,2,3],[0,0,0,3,0,3,0,3],[0,0,0,4,2,5,2,3],
 [0,0,0,2,4,5,0,4],[0,0,0,1,2,0,0,4],[0,0,0,1,5,3,0,4],[0,0,0,4,4,2,2,4],
@@ -62,7 +62,7 @@ def breakInputs(question_num, set_remaining):
   index = question_to_index[question_num]
   for lst in set_remaining:
     answer = lst[index]
-    if answer in question_to_yes_answers[question_num]:
+    if answer == question_to_yes_answers[question_num]:
       true.append(lst)
     else:
       false.append(lst)
@@ -81,34 +81,54 @@ def numOfClasses(lst):
 
 #computes the gini impurity for a specific list of either true/false answers
 def computeGini(lst):
+  #print("start compute gini")
   class_freq = numOfClasses(lst)
+  #print(class_freq)
   gini_sum = 0
   for cl in class_freq:
-    prob = class_freq[cl]/len(class_freq) #frequency for that class/total num of classes
+    prob = class_freq[cl]/len(lst) #frequency for that class/total num of classes
+    #print(str(prob))
+    #print("prob is " + str(prob))
     gini_sum += prob * (1-prob)
+    #print("gini sum is " + str(gini_sum))
+  #print(gini_sum)
   return gini_sum
 
 def infoGain(parent_infogain, true_input, false_input, gini_true, gini_false):
-  avg_gini = (true_length * gini_true)/len(true_input) + (false_length * gini_false)/len(false_input)
-  return parent_infogain - avg_gini
+  print("parent " + str(parent_infogain))
+  total_length = len(true_input) + len(false_input)
+  print("weight of true " + str(len(true_input)/total_length))
+  print("weight of false " + str(len(false_input)/total_length))
+  avg_gini = (len(true_input) * gini_true)/total_length + (len(false_input) * gini_false)/total_length
+  return avg_gini
+  #return parent_infogain - avg_gini
 
 #determines the correct question
 def get_question(parent_infogain, dataset, possible_questions):
   best_q = 0
-  highest_ig = 0
+  highest_gi = 2
+  #highest_ig = 0
   true_set = []
   false_set = []
   for qu in possible_questions:
     true_data, false_data = breakInputs(qu, dataset) #get true and false sets
+    #print("true")
+    #print(true_data)
+    #print(false_data)
     true_gini = computeGini(true_data)
+    #print("true gini: " + str(true_gini))
+    #print(false_data)
     false_gini = computeGini(false_data)
+    #print("false gini: " + str(false_gini))
     info_gain = infoGain(parent_infogain, true_data, false_data, true_gini, false_gini)
-    if info_gain > highest_ig:
-      highest_ig = info_gain
+    print(info_gain)
+    #print("info gain: " + str(info_gain))
+    if info_gain < highest_gi:
+      highest_gi = info_gain
       best_q = qu
       true_set = true_data
       false_set = false_data
-  return best_q, highest_ig, true_set, false_set
+  return best_q, highest_gi, true_set, false_set
 
 def create_Tree(dataset, prev_info_gain, questions):
   #base cases
@@ -143,6 +163,7 @@ def create_Tree(dataset, prev_info_gain, questions):
   
   #not base case
   best_q, highest_ig, true_set, false_set = get_question(prev_info_gain, dataset, questions)
+  #print(best_q)
   questions.remove(best_q)
   true_side = create_Tree(true_set, highest_ig, questions)
   false_side = create_Tree(false_set, highest_ig, questions)
@@ -151,20 +172,28 @@ def create_Tree(dataset, prev_info_gain, questions):
 
 def getResult(node):
   if node.yes == None and node.no == None:
-    city_result = city_to_num(node.num)
+    city_result = city_to_num[node.num]
     return city_result
   question_num = node.num
   user_response = input(questions_to_num[question_num])
   valid = False
-  while not valid:
-    if user_response.lower() != 'y' or user_response.lower() != 'n':
-      user_response = ("Please enter a valid answer. 'y' for yes and 'n' for no. >>")
-    else:
-      valid = True
+  #user_response = 'y'
+  print('start')
+  print(user_response == 'y')
+  print(user_response == 'n')
+  #while not valid:
+    #print(user_response)
+    #if (user_response != "yes") or (user_response != "no"):
+      #print("in if")
+      #user_response = input("Please enter a valid answer. 'y' for yes and 'n' for no. >>")
+    #else:
+      #print("in else")
+      #valid = True
+  #print("here")
   if user_response.lower() == 'y':
-    getResult(node.yes)
+    return getResult(node.yes)
   else:
-    getResult(node.no)
+    return getResult(node.no)
 
 def main():
   print("in main")
