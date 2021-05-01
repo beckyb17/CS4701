@@ -77,6 +77,7 @@ def getResult(node):
   if node.yes == None and node.no == None:
     city_result = city_to_num[node.num]
     start_message.configure(text = "You should move to " + city_result + "!")
+  #need to update the global tree variable to move to this node
   global tree
   tree = node 
   question_num = node.num

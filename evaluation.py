@@ -12,7 +12,8 @@ def getResult(node, test, question_to_yes_answers, question_to_index):
     return getResult(node.yes, test, question_to_yes_answers, question_to_index)
   else:
     return getResult(node.no, test, question_to_yes_answers, question_to_index)
-  
+
+#function to run the test set. node = tree, test = test set
 def testSet(node, test, question_to_yes_answers, question_to_index):
   num_correct = 0
   wrong_tests = []
@@ -84,6 +85,7 @@ def firstTraining():
   
   questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]
 
+  #create the tree on this dataset
   create_tree = decisiontree.create_Tree(train_set, 1, questions, question_to_index, question_to_yes_answers)
 
   #test the test set
