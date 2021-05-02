@@ -30,6 +30,7 @@ def testSet(node, test, question_to_yes_answers, question_to_index):
 
 #50% correct
 def firstTraining():
+  print("test 1")
   city_to_num = {0: "New York", 1:"Boston", 2:"Ithaca", 3:"Burlington", 4:"Austin",
   5:"Charlotte", 6:"San Francisco", 7:"Los Angeles", 8:"Seattle", 9:"Miami"}
 
@@ -92,10 +93,12 @@ def firstTraining():
   percent, wrong = testSet(create_tree, test_set, question_to_yes_answers, question_to_index)
   print("percent correct is " + str(percent))
   print("wrong tests are " + str(wrong))
+  print()
 
 #expanding first dataset with 50% more entries
 #67% correct
 def secondTraining():
+  print("test 2")
   city_to_num = {0: "New York", 1:"Boston", 2:"Ithaca", 3:"Burlington", 4:"Austin",
   5:"Charlotte", 6:"San Francisco", 7:"Los Angeles", 8:"Seattle", 9:"Miami"}
 
