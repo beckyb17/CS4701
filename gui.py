@@ -64,42 +64,97 @@ dataset = [[1,1,1,0,0,1,2,0], [1,1,1,1,0,2,1,0], [1,1,1,3,5,6,1,0], [1,1,1,2,0,2
 
 questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]
 
-tree = create_tree = decisiontree.create_Tree(dataset, 1, questions, question_to_index, question_to_yes_answers)
+tree = decisiontree.create_Tree(dataset, 1, questions, question_to_index, question_to_yes_answers)
 
 #trying the gui (not working yet)
 window = tk.Tk()
+"""
 start_message = tk.Label(master = window, text = "Welcome! The game will start shortly")
 start_message.pack()
+"""
+class TreeRecurse:
 
-def getResult(node):
-  print(node.num)
-  global start_message
-  if node.yes == None and node.no == None:
-    city_result = city_to_num[node.num]
-    start_message.configure(text = "You should move to " + city_result + "!")
-  #need to update the global tree variable to move to this node (don't think it's doing this)
-  global tree
-  tree = node 
-  print("tree " + str(tree.num))
-  question_num = node.num
-  question = questions_to_num[question_num]
-  start_message.configure(text = question)
+  def __init__(self, window, tree, questions_to_num, city_to_num):
+    initial_q = questions_to_num[tree.num]
+    self.message = tk.Label(master = window, text = initial_q)
+    self.YesButton = tk.Button(master = window, text = "Yes", command = self.getYesResult)
+    self.NoButton = tk.Button(master = window, text = "No", command = self.getNoResult)
+    self.message.pack()
+    self.YesButton.pack()
+    self.NoButton.pack()
+    self.node = tree
 
-question = questions_to_num[tree.num]
-start_message.configure(text = question)
-yes_button = tk.Button(master = window, text = "Yes", command = partial(getResult, tree.yes))
-yes_button.pack()
-no_button = tk.Button(master = window, text = "No", command = partial(getResult, tree.no))
-no_button.pack()
+  def getYesResult(self):
+    if self.node.yes.yes == None and self.node.yes.no == None:
+      city_result = city_to_num[self.node.yes.num]
+      self.message.configure(text = "You should move to " + city_result + "!")
+    else:
+      self.node = self.node.yes
+      question = questions_to_num[self.node.num]
+      self.message.configure(text = question)
 
-window.mainloop()
+  def getNoResult(self):
+    if self.node.no.yes == None and self.node.no.no == None:
+      city_result = city_to_num[self.node.no.num]
+      self.message.configure(text = "You should move to " + city_result + "!")
+    else:
+      self.node = self.node.no
+      question = questions_to_num[self.node.num]
+      self.message.configure(text = question)
+
 
 """
-#make the buttons
-question_frame = tk.Frame(master=window, height=150, bg="red")
-answer_frame = tk.Frame(master=window,height=25,bg="blue")
-yes_button = tk.Button(master = answer_frame, text = "Yes")
-no_button = tk.Button(master = answer_frame, text = "No")
-yes_button.grid(row=0, column=0)
-no_button.grid(row=0, column=1)
+def getResult(node, ans):
+  print(node.num)
+  print(ans)
+  print("yes options " + str(node.yes.num))
+  print("no options " + str(node.no.num))
+  global start_message
+  if node.yes == None and node.no == None:
+    print("in if")
+    city_result = city_to_num[node.num]
+    start_message.configure(text = "You should move to " + city_result + "!")
+  else:
+    #need to update the global tree variable to move to this node (don't think it's doing this)
+    global tree
+    print("tree 1 " + str(tree.num))
+    tree = node 
+    print("tree " + str(tree.num))
+    print("tree yes " + str(tree.yes.num))
+    print("tree no " + str(tree.no.num))
+    question_num = node.num
+    question = questions_to_num[question_num]
+    print(question)
+    start_message.configure(text = question)
+
+
+question = questions_to_num[tree.num]
+start_message = tk.Label(master = window, text = question)
+start_message.pack()
+yes_button = tk.Button(master = window, text = "Yes", command = partial(getResult, tree.yes, "Yes"))
+yes_button.pack()
+no_button = tk.Button(master = window, text = "No", command = partial(getResult, tree.no, "No"))
+no_button.pack()
+"""
+
+r = TreeRecurse(window, tree, questions_to_num, city_to_num)
+window.mainloop()
+
+
+"""
+def getResult(node):
+  print(node.num)
+  if node.yes == None and node.no == None:
+    city_result = city_to_num[node.num]
+    return city_result
+  question_num = node.num
+  user_response = input(questions_to_num[question_num]) #need to input y or n--will be different with the gui
+  valid = False
+  if user_response.lower() == 'y':
+    return getResult(node.yes)
+  else:
+    return getResult(node.no)
+
+result = getResult(tree)
+print(result)
 """
