@@ -1,7 +1,10 @@
 import decisiontree
+import random
 #gets the result for a specific test response
 def getResult(node, test, question_to_yes_answers, question_to_index):
+  #print("in get result")
   if node.yes == None and node.no == None:
+    #print("in if")
     return node.num
   question_num = node.num
   question_index = question_to_index[question_num]
@@ -9,8 +12,10 @@ def getResult(node, test, question_to_yes_answers, question_to_index):
   yes_option = question_to_yes_answers[question_num]
   #check the test's answer
   if ans == yes_option:
+    #print("in yes")
     return getResult(node.yes, test, question_to_yes_answers, question_to_index)
   else:
+    #print("in no")
     return getResult(node.no, test, question_to_yes_answers, question_to_index)
 
 #function to run the test set. node = tree, test = test set
@@ -18,8 +23,9 @@ def testSet(node, test, question_to_yes_answers, question_to_index):
   num_correct = 0
   wrong_tests = []
   for t in test:
+    #print(t)
     result = getResult(node, t, question_to_yes_answers, question_to_index)
-    print("result is " + str(result) + " " + "test answer is " + str(t[-1]))
+    #print("result is " + str(result) + " " + "test answer is " + str(t[-1]))
     #if result is correct
     if result == t[-1]:
       num_correct += 1
@@ -70,7 +76,7 @@ def firstTraining():
 
   #dataset takes shape of
   #size | pop density | cost of living | industry | food | activity | |transporation | label
-  train_set = [[1,1,1,0,0,1,2,0], [1,1,1,1,0,2,1,0], [1,1,1,3,5,6,1,0], [1,1,1,2,0,2,3,0],
+  dataset = [[1,1,1,0,0,1,2,0], [1,1,1,1,0,2,1,0], [1,1,1,3,5,6,1,0], [1,1,1,2,0,2,3,0],
   [1,1,1,3,0,0,3,1],[1,1,1,4,0,1,1,1],[1,1,1,1,2,3,3,1],[1,1,1,3,2,0,1,1],
   [0,0,0,4,3,3,2,2],[0,0,0,4,0,5,0,2],[0,0,0,3,3,3,0,2],[0,0,0,3,4,6,2,2],
   [0,0,0,3,2,3,0,3],[0,0,0,4,0,5,2,3],[0,0,0,3,0,3,0,3],[0,0,0,4,2,5,2,3],
@@ -79,21 +85,45 @@ def firstTraining():
   [0,1,1,1,1,1,0,6],[0,1,1,1,2,4,3,6],[0,1,1,0,3,5,2,6],[0,1,1,0,3,1,1,6],
   [1,1,0,5,1,4,0,7],[1,1,0,5,3,2,2,7],[1,1,0,5,1,3,0,7],[1,1,0,6,1,5,0,7],
   [0,0,1,1,0,5,0,8],[0,0,1,1,3,1,1,8],[0,0,1,1,2,5,3,8],[0,0,1,2,0,3,3,8],
-  [0,0,0,0,3,4,0,9],[0,0,0,2,3,4,2,9],[0,0,0,0,5,4,2,9],[0,0,0,2,0,5,0,9]]
-
-  test_set = [[0,0,0,7,0,3,0,3], [0,0,0,4,2,3,0,3], [1,1,1,0,0,2,3,0], [1,1,1,3,0,0,3,1],
+  [0,0,0,0,3,4,0,9],[0,0,0,2,3,4,2,9],[0,0,0,0,5,4,2,9],[0,0,0,2,0,5,0,9],
+  [0,0,0,7,0,3,0,3], [0,0,0,4,2,3,0,3], [1,1,1,0,0,2,3,0], [1,1,1,3,0,0,3,1],
   [0,0,0,1,5,5,0,4], [0,1,1,1,3,3,2,6]]
   
-  questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]
+  #questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]
 
-  #create the tree on this dataset
-  create_tree = decisiontree.create_Tree(train_set, 1, questions, question_to_index, question_to_yes_answers)
-
-  #test the test set
-  percent, wrong = testSet(create_tree, test_set, question_to_yes_answers, question_to_index)
-  print("percent correct is " + str(percent))
-  print("wrong tests are " + str(wrong))
+  percent_correct = 0
+  j = 0
+  total = 0
+  train_rows = []
+  while j < 1000:
+    total = range(len(dataset))
+    train_rows = random.sample(total, int(.8*len(dataset)))
+    #print(train_rows)
+    test_set = []
+    train_set = []
+    for i in total:
+      if i in train_rows:
+        train_set.append(dataset[i])
+      else:
+        test_set.append(dataset[i])
+    #create the tree on this dataset
+    #print(train_set)
+    #print(str(j))
+    questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]
+    #print(questions)
+    createtree = decisiontree.create_Tree(train_set, 1, questions, question_to_index, question_to_yes_answers)
+    #print("after")
+    #test the test set
+    percent, wrong = testSet(createtree, test_set, question_to_yes_answers, question_to_index)
+    #print("round 1")
+    #print(percent)
+    percent_correct += percent
+    j += 1
+  percent_correct = percent_correct/1000
+  print("percent correct is " + str(percent_correct))
+  #print("wrong tests are " + str(wrong))
   print()
+
 
 #expanding first dataset with 50% more entries
 #67% correct
@@ -138,7 +168,7 @@ def secondTraining():
 
   #dataset takes shape of
   #size | pop density | cost of living | industry | food | activity |transporation | label
-  train_set = [[1,1,1,0,0,1,2,0], [1,1,1,1,0,2,1,0], [1,1,1,3,5,6,1,0], [1,1,1,2,0,2,3,0],
+  dataset = [[1,1,1,0,0,1,2,0], [1,1,1,1,0,2,1,0], [1,1,1,3,5,6,1,0], [1,1,1,2,0,2,3,0],
   [1,1,1,0,0,2,3,0],[1,1,1,0,1,1,0],
   [1,1,1,3,0,0,3,1],[1,1,1,4,0,1,1,1],[1,1,1,1,2,3,3,1],[1,1,1,3,2,0,1,1],
   [0,1,1,3,0,1,2,1],[0,1,1,1,2,5,3,1],
@@ -157,19 +187,36 @@ def secondTraining():
   [0,0,1,1,0,5,0,8],[0,0,1,1,3,1,1,8],[0,0,1,1,2,5,3,8],[0,0,1,2,0,3,3,8],
   [0,0,1,1,2,3,0,8], [0,0,1,1,3,3,0,8],
   [0,0,0,0,3,4,0,9],[0,0,0,2,3,4,2,9],[0,0,0,0,5,4,2,9],[0,0,0,2,0,5,0,9],
-  [0,0,0,2,1,0,0,9], [0,0,0,2,4,4,0,9]]
+  [0,0,0,2,1,0,0,9], [0,0,0,2,4,4,0,9], 
+  [0,0,0,3,0,3,0,3], [0,0,0,4,2,3,0,3], [1,1,1,0,0,2,3,0], [1,1,1,3,0,0,3,1],
+  [0,0,0,1,5,5,0,4], [0,1,1,1,3,3,2,6]]
 
-  test_set = [[0,0,0,3,0,3,0,3], [0,0,0,4,2,3,0,3], [1,1,1,0,0,2,3,0], [1,1,1,3,0,0,3,1],
-  [0,0,0,1,5,5,0,4], [0,1,1,1,3,3,2,6],  ]
+  total = range(len(dataset))
+  train_rows = random.sample(total, int(.8*len(dataset)))
+  test_set = []
+  train_set = []
+  for i in total:
+    if i in train_rows:
+      train_set.append(dataset[i])
+    else:
+      test_set.append(dataset[i])
   
   questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]
 
-  create_tree = decisiontree.create_Tree(train_set, 1, questions, question_to_index, question_to_yes_answers)
-
-  #test the test set
-  percent, wrong = testSet(create_tree, test_set, question_to_yes_answers, question_to_index)
-  print("percent correct is " + str(percent))
-  print("wrong tests are " + str(wrong))
+  percent_correct = 0
+  j = 0
+  while j < 1000:
+  #create the tree on this dataset
+    questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]
+    create_tree = decisiontree.create_Tree(train_set, 1, questions, question_to_index, question_to_yes_answers)
+    #test the test set
+    percent, wrong = testSet(create_tree, test_set, question_to_yes_answers, question_to_index)
+    percent_correct += percent
+    j += 1
+  percent_correct = percent_correct/1000
+  print("percent correct is " + str(percent_correct))
+  #print("wrong tests are " + str(wrong))
+  print()
 
 
 def thirdTraining():
@@ -227,7 +274,7 @@ def thirdTraining():
 
   #dataset takes shape of
   #size|pop density|cost of living|industry|food|activity|transporation|weather|house|language|politics| label
-  train_set = [[1,1,1,0,0,1,2,0,0,1,0,0], [1,1,1,1,0,2,1,0,0,1,0,0], [1,1,1,3,0,6,1,2,0,1,0,0], [1,1,1,2,0,2,3,0,0,1,0,0],
+  dataset = [[1,1,1,0,0,1,2,0,0,1,0,0], [1,1,1,1,0,2,1,0,0,1,0,0], [1,1,1,3,0,6,1,2,0,1,0,0], [1,1,1,2,0,2,3,0,0,1,0,0],
   [1,1,1,0,0,2,3,0,0,1,0,0],[1,1,1,0,1,1,2,0,1,0,0],
   [0,1,1,3,0,0,3,0,0,1,0,1],[1,1,1,4,0,1,1,2,0,1,0,1],[1,1,1,1,2,3,3,0,2,1,0,1],[0,1,1,3,2,0,1,4,2,1,0,1],
   [0,1,1,3,0,1,2,4,0,1,0,1],[0,1,1,1,2,5,3,0,0,1,0,1],
@@ -244,23 +291,40 @@ def thirdTraining():
   [0,0,1,1,0,5,0,1,0,1,0,8],[0,0,1,1,3,1,1,1,2,1,0,8],[0,0,1,1,2,5,3,1,0,1,0,8],[0,0,1,2,0,3,3,1,2,0,0,8],
   [1,0,1,1,2,3,0,3,2,0,0,8], [1,0,1,1,3,3,0,3,2,1,0,8],
   [0,0,0,0,3,4,0,2,1,1,0,9],[0,0,0,2,3,4,2,2,1,1,1,9],[0,0,0,0,5,4,2,2,2,0,0,9],[0,0,0,2,0,5,0,2,2,0,1,9],
-  [0,0,0,2,1,0,0,1,2,1,1,9], [0,0,0,2,4,4,0,2,0,0,0,9]]
-
-  test_set = [[1,1,1,0,0,1,3,0,0,1,0,0],[1,1,1,3,2,5,2,4,0,1,0,1],[0,0,0,4,3,6,0,0,2,0,1,2],
+  [0,0,0,2,1,0,0,1,2,1,1,9], [0,0,0,2,4,4,0,2,0,0,0,9], 
+  [1,1,1,0,0,1,3,0,0,1,0,0],[1,1,1,3,2,5,2,4,0,1,0,1],[0,0,0,4,3,6,0,0,2,0,1,2],
   [0,0,0,2,5,0,0,2,2,1,1,4],[0,0,0,1,4,5,0,3,2,0,0,5],[1,1,1,2,3,5,2,0,1,0,6],[1,0,1,5,1,4,0,2,0,1,0,7],
   [1,0,1,1,0,1,0,1,2,1,0,8],[0,0,0,2,5,4,0,2,1,1,1,9],
   [1,1,1,0,0,2,3,0,0,1,0,0],[1,0,1,3,2,5,2,4,0,1,0,1],[0,0,1,4,3,6,0,0,2,0,1,2],
   [0,0,0,1,5,3,0,2,2,1,1,4],[0,0,0,1,4,5,0,3,2,0,0,5],[1,1,1,2,3,5,2,0,1,0,6],[1,1,0,5,3,2,2,2,0,1,0,7],
   [1,0,1,1,0,3,0,1,2,1,0,8],[0,0,0,2,4,4,0,2,0,0,0,9]]
+
+  total = list(range(len(dataset)))
+  train_rows = random.sample(total, int(.8*len(dataset)))
+  test_set = []
+  train_set = []
+  for i in total:
+    if i in train_rows:
+      train_set.append(dataset[i])
+    else:
+      test_set.append(dataset[i])
   
   questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38]
 
-  create_tree = decisiontree.create_Tree(train_set, 1, questions, question_to_index, question_to_yes_answers)
-
-  #test the test set
-  percent, wrong = testSet(create_tree, test_set, question_to_yes_answers, question_to_index)
-  print("percent correct is " + str(percent))
-  print("wrong tests are " + str(wrong))
+  percent_correct = 0
+  j = 0
+  while j < 1000:
+  #create the tree on this dataset
+    questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38]
+    create_tree = decisiontree.create_Tree(train_set, 1, questions, question_to_index, question_to_yes_answers)
+    #test the test set
+    percent, wrong = testSet(create_tree, test_set, question_to_yes_answers, question_to_index)
+    percent_correct += percent
+    j += 1
+  percent_correct = percent_correct/1000
+  print("percent correct is " + str(percent_correct))
+  #print("wrong tests are " + str(wrong))
+  print()
 
 
 
@@ -268,6 +332,5 @@ if __name__ == '__main__':
   firstTraining()
   secondTraining()
   thirdTraining()
-
 
 
