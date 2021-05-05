@@ -326,7 +326,108 @@ def thirdTraining():
   #print("wrong tests are " + str(wrong))
   print()
 
+def fourthTraining():
+  city_to_num = {0: "New York", 1:"Boston", 2:"Ithaca", 3:"Austin",
+  4:"Charlotte", 5:"San Francisco", 6:"Los Angeles", 7:"Seattle", 8:"Miami",
+  9:"Nashville", 10:"Chicago"}
 
+  questions_to_num = {1: "Would you like a big population?", 
+  2:"Would you like a big population density?", 
+  3:"Do you mind a high cost of living?", 4:"Are you working in finance?",
+  5:"Are you working in tech?", 6:"Are you working in business?",
+  7: "Are you working in medicine?", 8:"Are you working in education?", 9:"Are you working in entertainment?",
+  10:"Are you working in music?", 11:"Do you like Italian food?", 12: "Do you like Mexican food?",
+  13:"Do you like seafood?", 14:"Are you vegetarian?", 15:"Do you like fried food?", 
+  16:"Do you like barbecque?", 
+  17:"Do you like watching sport games?", 18:"Do you like going to museums?", 19:"Do you like going to bars?",
+  20: "Do you like hiking?", 21: "Do you like the beach?", 22:"Do you like shopping?",
+  23:"Do you prefer to drive?", 24:"Do you prefer to walk?", 25:"Do you prefer to take the bus?",
+  26:"Do you prefer to take the metro?", 27:"Do you like to ski?",
+  28: "Are you okay with snow in the winter?", 29:"Are you okay with rain?", 
+  30:"Do you want sunny weather year-round?",
+  31:"Would you rather live in an apartment than a big house?", 
+  32:"Do you prefer a liberal neighborhood over a conservative one?", 
+  33:"Are you okay with humid summers?"}
+
+  size_to_num = {0:"Small", 1:"Big"}
+
+  pop_density_to_num = {0:"Small", 1:"Big"}
+
+  cost_living_to_num = {0:"Low", 1:"High"}
+
+  industry_to_num = {0:"Finance", 1:"Tech", 2:"Business", 3:"Medicine", 4:"Education",
+  5:"Entertainment", 6:"Music"}
+
+  food_to_num = {0:"Italian", 1:"Mexican", 2:"Seafood", 3:"Vegetarian", 4:"Fried food", 5:"Barbecque"}
+
+  activity_to_num = {0:"Sports", 1:"Museums", 2:"Bars", 3:"Hiking", 4:"Beach", 5:"Shopping",6:"Skiing"}
+
+  transportation = {0:"Drive", 1:"Walk", 2:"Bus", 3:"Metro"}
+
+  weather_and_temp = {0:"Snow", 1:"Sunny", 2:"Moderate", 3:"Humid", 4:"Rain", 5:"Dry"}
+
+  type_of_house = {0:"Apartment", 1:"House"}
+
+  #speak_multiple_language = {0:"No", 1:"Yes"}
+
+  politics = {0:"liberal", 1:"conservative"}
+
+  question_to_index = {1:0,2:1,3:2,4:3,5:3,6:3,7:3,8:3,9:3,10:3,11:4,12:4,13:4,14:4,
+  15:4,16:4,17:5,18:5,19:5,20:5,21:5,22:5,23:6,24:6,25:6,26:6,27:5,
+  28:7,29:8,30:7,31:9,32:10,33:8,34:}
+
+  question_to_yes_answers = {1:1,2:1,3:0,4:0,5:1,6:2,7:3,8:4,9:5,10:6,11:0,12:1,13:2,14:3,15:4,16:5,
+  17:0,18:1,19:2,20:3,21:4,22:5,23:0,24:1,25:2,26:3,27:6,28:0,29:4,30:1,31:0,32:0,33:3}
+
+  #dataset takes shape of
+  #size|pop density|cost of living|industry|food|activity|transporation|winter weather|
+  #|summer weather|house|politics| label
+  dataset = [[1,1,1,0,1,1,3,0,3,0,0,0],
+  [1,1,1,0,0,2,1,0,3,0,0,0],
+  [1,1,1,2,0,2,1,0,3,0,0,0],
+  [1,1,1,2,0,2,3,0,3,0,0,0],
+  [1,1,1,0,0,2,3,0,4,0,0,0],
+  [1,1,1,1,0,2,3,0,4,0,0,0],
+  [1,1,1,0,1,1,1,0,3,0,0,0],
+  [0,1,1,1,0,0,2,0,3,0,0,1],
+  [1,1,1,4,0,1,2,0,3,0,0,1],
+  [1,1,1,3,2,3,3,0,4,1,0,1],
+  [0,1,1,3,2,6,1,0,3,1,0,1],
+  [0,1,1,3,0,3,2,0,4,0,0,1],
+  [0,1,1,1,2,5,3,0,3,0,0,1],
+  [0,0,0,4,3,3,2,0,3,1,0,2],
+  [0,0,0,4,0,6,0,0,3,1,0,2],
+  [0,0,0,3,3,3,0,0,3,1,0,2],
+  [0,0,0,3,2,6,0,0,3,1,0,2],
+  [0,0,0,4,3,3,0,0,3,1,0,2],
+  [0,0,0,4,0,5,0,0,3,1,0,2]] 
+
+  total = list(range(len(dataset)))
+  train_rows = random.sample(total, int(.8*len(dataset)))
+  test_set = []
+  train_set = []
+  for i in total:
+    if i in train_rows:
+      train_set.append(dataset[i])
+    else:
+      test_set.append(dataset[i])
+  
+  questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38]
+
+  percent_correct = 0
+  j = 0
+  while j < 1000:
+  #create the tree on this dataset
+    questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38]
+    create_tree = decisiontree.create_Tree(train_set, 1, questions, question_to_index, question_to_yes_answers)
+    #test the test set
+    percent, wrong = testSet(create_tree, test_set, question_to_yes_answers, question_to_index)
+    percent_correct += percent
+    j += 1
+  percent_correct = percent_correct/1000
+  print("percent correct is " + str(percent_correct))
+  #print("wrong tests are " + str(wrong))
+  print()
 
 if __name__ == '__main__':
   firstTraining()
