@@ -3,6 +3,7 @@ import tkinter as tk
 from functools import partial
 import time
 from PIL import Image, ImageTk
+from cosinesim import song_to_index
 
 #information for the decision tree (dataset and helper functions)
 #taken from one of the evaluation.py datasets for now
@@ -141,12 +142,25 @@ class TreeRecurse:
     font = ('Arial'), bg = "black")
     self.NoButton = tk.Button(master = answer_frame, text = "No", command = self.getNoResult,
     font = ('Arial'), bg = "black")
+    self.ExitButton = tk.Button(master = answer_frame, text = "Exit", command = window.quit, 
+    font = ('Arial'), bg = "black")
+    self.BeginButton = tk.Button(master = answer_frame, text = "Begin", command = self.begin,
+    font = ('Arial'), bg = "black")
+    self.EnterButton = tk.Button(master = answer_frame, text = "Enter", command = self.rank,
+    font = ('Arial'), bg = "black")
+    self.Entry = tk.Entry(master = answer_frame)
 
   def getYesResult(self):
     print("in yes")
     if self.node.yes.yes == None and self.node.yes.no == None:
       city_result = city_to_num[self.node.yes.num]
       self.message.configure(text = "You should move to " + city_result + "!")
+      time.sleep(5)
+      self.YesButton.destroy()
+      self.NoButton.destroy()
+      self.ExitButton.pack()
+      self.BeginButton.pack()
+      self.message.configure(text = "BONUS: Would you like a curated Taylor Swift playlist for your moving trip? If yes, press 'Begin'. If no, press 'Exit.'")
     else:
       self.node = self.node.yes
       question = questions_to_num[self.node.num]
@@ -168,6 +182,24 @@ class TreeRecurse:
     self.message.configure(text = initial_q)
     self.YesButton.pack()
     self.NoButton.pack()
+  
+  def begin(self):
+    self.BeginButton.destroy()
+    self.ExitButton.pack_forget()
+    self.message.configure("Please enter the name of your favorite Taylor Swift song and we will recommend a playlist of other Taylor Swift songs you will enjoy.")
+    self.Entry.pack()
+    self.EnterButton.pack()
+  
+  def rank(self):
+    song = self.Entry.get()
+    if song.lower() in song_to_index:
+      index = song_to_index[song.lower()]
+    else:
+      self.message.configure("Sorry, that song is not in the dataset. Please check the spelling and/or enter a different Taylor Swift song, or exit the window.")
+    cos_sim_matrix = np.array(np.load('cos_sim_matrix.npy'))
+    sims = cos_sim_matrix[index]
+    
+
 
 
 """
