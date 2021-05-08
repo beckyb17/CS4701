@@ -76,9 +76,11 @@ def create_Tree(dataset, prev_info_gain, questions, question_to_index, question_
   for i in dataset:
     #if first round,
     if r == 0:
+      print(i,class_seen)
       class_seen = i[-1]
       r = 1
     else:
+      print(i,class_seen)
       if not class_seen == i[-1]:
         all_same = False
   if all_same:
