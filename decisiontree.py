@@ -65,8 +65,10 @@ def get_question(parent_infogain, dataset, possible_questions, question_to_index
   return best_q, highest_gi, true_set, false_set
 
 def create_Tree(dataset, prev_info_gain, questions, question_to_index, question_to_yes_answers):
+  #print("in create")
   #base cases
   if len(dataset) == 0:
+    #print("in if dataset")
     return TreeNode(0, None, None) #if nothing left in the dataset, return default of New York
   
   #check if they're all the same class--if so create leaf node
@@ -84,10 +86,12 @@ def create_Tree(dataset, prev_info_gain, questions, question_to_index, question_
       if not class_seen == i[-1]:
         all_same = False
   if all_same:
+    #print("in all same")
     return TreeNode(class_seen, None, None) #leaf node where the number is the city
   
   #check if there's no more questions left--if so return city with highest freq
   if len(questions) == 0:
+    #print("in if questions")
     city_frequency = numOfClasses(dataset)
     most_common_city = -1
     highest_freq = 0
@@ -99,7 +103,6 @@ def create_Tree(dataset, prev_info_gain, questions, question_to_index, question_
   
   #not base case
   best_q, highest_ig, true_set, false_set = get_question(prev_info_gain, dataset, questions, question_to_index, question_to_yes_answers)
-
   questions.remove(best_q)
   true_side = create_Tree(true_set, highest_ig, questions, question_to_index, question_to_yes_answers)
   false_side = create_Tree(false_set, highest_ig, questions, question_to_index, question_to_yes_answers)
