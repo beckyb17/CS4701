@@ -9,7 +9,6 @@ df_dict = df.to_dict(orient = 'records')
 
 #song to index maps song titles to their index
 #index dic maps song index to a list of its lyrics
-
 song_to_index = {}
 index_dic = {}
 current_song = "Lover" #first song in dataset

@@ -139,6 +139,8 @@ class TreeRecurse:
     font = ('Arial, 25'), bg = "white")
     self.message.pack()
     self.StartButton.pack()
+
+    #buttons to be used later on
     self.YesButton = tk.Button(master = answer_frame, text = "Yes", command = self.getYesResult,
     font = ('Arial'), bg = "black")
     self.NoButton = tk.Button(master = answer_frame, text = "No", command = self.getNoResult,
@@ -149,11 +151,13 @@ class TreeRecurse:
     font = ('Arial'), bg = "black")
     self.EnterButton = tk.Button(master = answer_frame, text = "Enter", command = self.rank,
     font = ('Arial'), bg = "black")
+    #entry box to give the taylor swift song title
     self.Entry = tk.Entry(master = answer_frame)
     self.YesTSwift = tk.Button(master = answer_frame, text = "Yes please!", command = self.begin,
     font = ('Arial'), bg = "black")
 
   def getYesResult(self):
+    #"recurses" through yes side of tree
     print("in yes")
     if self.node.yes.yes == None and self.node.yes.no == None:
       city_result = city_to_num[self.node.yes.num]
@@ -167,6 +171,7 @@ class TreeRecurse:
       self.message.configure(text = question)
 
   def getNoResult(self):
+    #"recurses" through no side of tree
     print("in no")
     if self.node.no.yes == None and self.node.no.no == None:
       city_result = city_to_num[self.node.no.num]
@@ -179,6 +184,7 @@ class TreeRecurse:
       question = questions_to_num[self.node.num]
       self.message.configure(text = question)
   
+  #displays the initial question (at the root of tree)
   def start(self):
     self.StartButton.destroy()
     initial_q = questions_to_num[self.node.num]
@@ -186,17 +192,20 @@ class TreeRecurse:
     self.YesButton.pack()
     self.NoButton.pack()
   
+  #called after the city is recommended, option to get a taylor swift playlist
   def next(self):
     self.NextButton.destroy()
     self.message.configure(text = "BONUS: Would you like a curated Taylor Swift playlist for your moving trip?")
     self.YesTSwift.pack()
     self.ExitButton.pack()
 
+  #asks user to enter the taylor swift song name
   def begin(self):
     self.message.configure(text = "Please enter the name of your favorite Taylor Swift song and we will recommend a playlist of other Taylor Swift songs you will enjoy.")
     self.Entry.pack()
     self.EnterButton.pack()
   
+  #computes the ranking and outputs the top 10 similar songs
   def rank(self):
     song = self.Entry.get()
     if song.lower() in song_to_index:
@@ -207,6 +216,8 @@ class TreeRecurse:
     sims = cos_sim_matrix[index]
     sims_dic = {}
     i = 0
+
+    #sort the cosine similarities from highest to smallest
     while i < len(sims):
       cos_sim = sims[i]
       sims_dic[i] = cos_sim
@@ -214,6 +225,7 @@ class TreeRecurse:
     cos_sims_sorted = sorted(sims_dic.items(), key = lambda pair:pair[1], reverse = True)
     recommendations = ""
     count = 0
+    #display top 10 relevant songs
     for j in cos_sims_sorted:
       if count >= 10:
         break
@@ -222,6 +234,7 @@ class TreeRecurse:
         recommendations = recommendations + ", " + new_song
         count += 1
     print(recommendations)
+    #displays recommendations to the user--need to fix formatting
     self.message.configure(text = recommendations)
 
 
