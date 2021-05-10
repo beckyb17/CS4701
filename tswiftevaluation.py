@@ -109,6 +109,29 @@ def evaluate_stem(not_stemmed, stemmed):
     s_avgs.append(stemmed_avg)
   return ns_avgs, s_avgs
 
+def printDifferences(ns_avgs, s_avgs):
+  i = 0
+  difference = []
+  while i < len(ns_avgs):
+    diff = s_avgs[i] - ns_avgs[i]
+    difference.append(diff)
+    i += 1
+  print("Stemming improvements")
+  print(difference)
+  difference.sort()
+  print("worst:")
+  print(difference[0])
+  print("best:")
+  print(difference[-1])
+  sum_diff = 0
+  j = 0
+  while j < len(difference):
+    sum_diff += difference[j]
+    j += 1
+  sum_diff = sum_diff/len(difference)
+  print("Average improvement")
+  print(sum_diff)
+
 if __name__ == '__main__':
   #stemming()
   not_stemmed = np.array(np.load('cosine_matrix.npy'))
@@ -120,3 +143,4 @@ if __name__ == '__main__':
   print("Averages with stemming")
   print(s_avgs)
   print()
+  printDifferences(ns_avgs, s_avgs)
