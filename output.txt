@@ -1,90 +1,90 @@
 Round 1 
 Test 1 
-Percent correct: 0.4662 
-Test 2 
-Percent correct: 0.4285714285714319 
-Test 3 
-Percent correct: 0.6000000000000113 
-Test 4 
-Percent correct: 0.8571428571428638 
-Round 2 
-Test 1 
-Percent correct: 0.46879999999999983 
-Test 2 
-Percent correct: 0.35714285714285215 
-Test 3 
-Percent correct: 0.6000000000000113 
-Test 4 
-Percent correct: 0.7142857142857043 
-Round 3 
-Test 1 
-Percent correct: 0.46229999999999993 
-Test 2 
-Percent correct: 0.6428571428571448 
-Test 3 
-Percent correct: 0.3333333333333318 
-Test 4 
-Percent correct: 1.0 
-Round 4 
-Test 1 
-Percent correct: 0.46950000000000025 
-Test 2 
-Percent correct: 0.4285714285714319 
-Test 3 
-Percent correct: 0.5333333333333441 
-Test 4 
-Percent correct: 0.7142857142857043 
-Round 5 
-Test 1 
-Percent correct: 0.46829999999999966 
-Test 2 
-Percent correct: 0.5 
-Test 3 
-Percent correct: 0.3333333333333318 
-Test 4 
-Percent correct: 0.7857142857142992 
-Round 6 
-Test 1 
-Percent correct: 0.46989999999999993 
+Percent correct: 0.46859999999999935 
 Test 2 
 Percent correct: 0.2857142857142824 
 Test 3 
-Percent correct: 0.7999999999999887 
+Percent correct: 0.7333333333333409 
 Test 4 
-Percent correct: 0.6428571428571448 
-Round 7 
+Percent correct: 0.9285714285714388 
+Round 2 
 Test 1 
-Percent correct: 0.4705 
-Test 2 
-Percent correct: 0.35714285714285215 
-Test 3 
-Percent correct: 0.6666666666666636 
-Test 4 
-Percent correct: 1.0 
-Round 8 
-Test 1 
-Percent correct: 0.45530000000000037 
-Test 2 
-Percent correct: 0.35714285714285215 
-Test 3 
-Percent correct: 0.5333333333333441 
-Test 4 
-Percent correct: 1.0 
-Round 9 
-Test 1 
-Percent correct: 0.45979999999999915 
+Percent correct: 0.4647000000000006 
 Test 2 
 Percent correct: 0.5 
 Test 3 
 Percent correct: 0.6666666666666636 
+Test 4 
+Percent correct: 0.7857142857142992 
+Round 3 
+Test 1 
+Percent correct: 0.46809999999999957 
+Test 2 
+Percent correct: 0.35714285714285215 
+Test 3 
+Percent correct: 0.46666666666665557 
+Test 4 
+Percent correct: 0.5714285714285648 
+Round 4 
+Test 1 
+Percent correct: 0.46399999999999947 
+Test 2 
+Percent correct: 0.2857142857142824 
+Test 3 
+Percent correct: 0.39999999999999436 
+Test 4 
+Percent correct: 0.9285714285714388 
+Round 5 
+Test 1 
+Percent correct: 0.46129999999999993 
+Test 2 
+Percent correct: 0.7142857142857043 
+Test 3 
+Percent correct: 0.39999999999999436 
 Test 4 
 Percent correct: 0.8571428571428638 
-Round 10 
+Round 6 
 Test 1 
-Percent correct: 0.4656 
+Percent correct: 0.46399999999999936 
 Test 2 
-Percent correct: 0.5 
+Percent correct: 0.7142857142857043 
 Test 3 
 Percent correct: 0.6000000000000113 
 Test 4 
-Percent correct: 0.9285714285714388 
+Percent correct: 0.7857142857142992 
+Round 7 
+Test 1 
+Percent correct: 0.45769999999999994 
+Test 2 
+Percent correct: 0.35714285714285215 
+Test 3 
+Percent correct: 0.6666666666666636 
+Test 4 
+Percent correct: 0.7857142857142992 
+Round 8 
+Test 1 
+Percent correct: 0.4548999999999999 
+Test 2 
+Percent correct: 0.2857142857142824 
+Test 3 
+Percent correct: 0.46666666666665557 
+Test 4 
+Percent correct: 0.7142857142857043 
+Round 9 
+Test 1 
+Percent correct: 0.4583999999999994 
+Test 2 
+Percent correct: 0.4285714285714319 
+Test 3 
+Percent correct: 0.6000000000000113 
+Test 4 
+Percent correct: 0.7857142857142992 
+Round 10 
+Test 1 
+Percent correct: 0.4678999999999998 
+Test 2 
+Percent correct: 0.6428571428571448 
+Test 3 
+Percent correct: 0.6000000000000113 
+Test 4 
+Percent correct: 0.8571428571428638 
