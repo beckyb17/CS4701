@@ -109,7 +109,7 @@ train_set = [[1,1,1,0,1,1,3,0,3,0,0,0],
 [1,1,1,2,4,5,0,0,4,0,0,10],
 [1,1,1,1,4,5,2,0,5,1,0,10]] 
 
-tree = decisiontree.create_Tree(train_set, 1, questions, question_to_index, question_to_yes_answers)
+tree = decisiontree.create_Tree(train_set, questions, question_to_index, question_to_yes_answers)
 
 #trying the gui (not working yet)
 window = tk.Tk()

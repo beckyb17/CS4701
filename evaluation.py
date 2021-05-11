@@ -1,7 +1,7 @@
 import decisiontree
 import random
 
-output_file = open("output.txt", 'w')
+#output_file = open("output.txt", 'w')
 #gets the result for a specific test response
 def getResult(node, test, question_to_yes_answers, question_to_index):
   #print("in get result")
@@ -114,7 +114,7 @@ def firstTraining():
     #print(str(j))
     questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]
     #print(questions)
-    createtree = decisiontree.create_Tree(train_set, 1, questions, question_to_index, question_to_yes_answers)
+    createtree = decisiontree.create_Tree(train_set, questions, question_to_index, question_to_yes_answers)
     #print("after")
     #test the test set
     percent, wrong = testSet(createtree, test_set, question_to_yes_answers, question_to_index)
@@ -213,7 +213,7 @@ def secondTraining():
   while j < 1000:
   #create the tree on this dataset
     questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]
-    create_tree = decisiontree.create_Tree(train_set, 1, questions, question_to_index, question_to_yes_answers)
+    create_tree = decisiontree.create_Tree(train_set, questions, question_to_index, question_to_yes_answers)
     #test the test set
     percent, wrong = testSet(create_tree, test_set, question_to_yes_answers, question_to_index)
     percent_correct += percent
@@ -304,8 +304,14 @@ def thirdTraining():
   [0,0,0,2,5,0,0,2,2,1,1,4],[0,0,0,1,4,5,0,3,2,0,0,5],[1,1,1,2,3,5,2,0,1,0,6],[1,0,1,5,1,4,0,2,0,1,0,7],
   [1,0,1,1,0,1,0,1,2,1,0,8],[1,0,0,2,5,4,0,2,1,1,1,9],
   [1,1,1,0,0,2,3,0,0,1,0,0],[1,0,1,3,2,5,2,4,0,1,0,1],[0,0,1,4,3,6,0,0,2,0,1,2],[0,0,0,4,4,6,0,0,2,0,0,3],
+<<<<<<< HEAD
   [1,0,1,1,0,1,0,1,2,1,0,8],[0,0,0,2,4,4,0,2,0,0,0,9],
   [0,0,0,2,1,0,0,1,2,1,1,9], [0,0,0,2,4,4,0,2,0,0,0,9], 
+=======
+  [0,0,0,1,5,3,0,2,2,1,1,4],[0,0,0,1,4,5,0,3,2,0,0,5],[1,1,1,2,3,5,2,0,1,0,6],[1,1,0,5,3,2,2,2,0,1,0,7],
+  [1,0,1,1,0,1,0,1,2,1,0,8],[0,0,0,2,4,4,0,2,0,0,0,9]]
+  [[0,0,0,2,1,0,0,1,2,1,1,9], [0,0,0,2,4,4,0,2,0,0,0,9], 
+>>>>>>> 7276c469a5f3ad4fde3674d02af0f554aa9915b5
   [1,1,1,0,0,1,3,0,0,1,0,0],[1,1,1,3,2,5,2,4,0,1,0,1],[0,0,0,4,3,6,0,0,2,0,1,2],
   [0,0,0,2,5,0,0,2,2,1,1,4],[0,0,0,1,4,5,0,3,2,0,0,5],[1,1,1,2,3,5,2,0,1,0,6],[1,0,1,5,1,4,0,2,0,1,0,7],
   [1,0,1,1,0,1,0,1,2,1,0,8],[0,0,0,2,5,4,0,2,1,1,1,9],
@@ -330,7 +336,7 @@ def thirdTraining():
   while j < 1000:
   #create the tree on this dataset
     questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38]
-    create_tree = decisiontree.create_Tree(train_set, 1, questions, question_to_index, question_to_yes_answers)
+    create_tree = decisiontree.create_Tree(train_set, questions, question_to_index, question_to_yes_answers)
     #test the test set
     percent, wrong = testSet(create_tree, test_set, question_to_yes_answers, question_to_index)
     percent_correct += percent
@@ -483,7 +489,7 @@ def fourthTraining():
   while j < 1000:
   #create the tree on this dataset
     questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33]
-    create_tree = decisiontree.create_Tree(train_set, 1, questions, question_to_index, question_to_yes_answers)
+    create_tree = decisiontree.create_Tree(train_set, questions, question_to_index, question_to_yes_answers)
     #test the test set
     percent, wrong = testSet(create_tree, test_set, question_to_yes_answers, question_to_index)
     percent_correct += percent
@@ -494,8 +500,12 @@ def fourthTraining():
   #print("wrong tests are " + str(wrong))
   print()
 
+<<<<<<< HEAD
 def fifthTraining():
   output_file.write("Test 5 \n")
+=======
+def learningCurve():
+>>>>>>> 7276c469a5f3ad4fde3674d02af0f554aa9915b5
   city_to_num = {0: "New York", 1:"Boston", 2:"Ithaca", 3:"Austin",
   4:"Charlotte", 5:"San Francisco", 6:"Los Angeles", 7:"Seattle", 8:"Miami",
   9:"Nashville", 10:"Chicago"}
@@ -518,6 +528,7 @@ def fifthTraining():
   32:"Do you prefer a liberal neighborhood over a conservative one?", 
   33:"Are you okay with humid summers?"}
 
+<<<<<<< HEAD
   size_to_num = {0:"Small", 1:"Big"}
 
   pop_density_to_num = {0:"Small", 1:"Big"}
@@ -539,6 +550,8 @@ def fifthTraining():
 
   #speak_multiple_language = {0:"No", 1:"Yes"}
 
+=======
+>>>>>>> 7276c469a5f3ad4fde3674d02af0f554aa9915b5
   politics = {0:"liberal", 1:"conservative"}
 
   question_to_index = {1:0,2:1,3:2,4:3,5:3,6:3,7:3,8:3,9:3,10:3,11:4,12:4,13:4,14:4,
@@ -619,6 +632,7 @@ def fifthTraining():
   [1,1,1,2,4,5,0,0,4,0,0,10],
   [1,1,1,1,4,5,2,0,5,1,0,10]] 
 
+<<<<<<< HEAD
   import pandas as pd
   from sklearn.model_selection import train_test_split
   from sklearn import tree
@@ -651,7 +665,54 @@ if __name__ == '__main__':
     # fourthTraining()
     # i += 1
   fifthTraining()
+=======
+  output = open('learningcurve.txt', 'w')
+  i = 1
+  while i < 10:
+    total = range(len(dataset))
+    #change the sizes of the training v. test set
+    train_rows = random.sample(total, int((i/10)*len(dataset)))
+    train_set = []
+    for k in total:
+      if k in train_rows:
+        train_set.append(dataset[k])
+    
+    #create a separate test set for the learning curve
+    test_set = [[1,1,1,0,0,5,3,0,3,0,0,0],]
+    questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34]
 
-output_file.close()
+    percent_correct = 0
+    j = 0
+    while j < 1000:
+    #create the tree on this dataset
+      questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33]
+      create_tree = decisiontree.create_Tree(train_set, questions, question_to_index, question_to_yes_answers)
+      #test the test set
+      percent, wrong = testSet(create_tree, test_set, question_to_yes_answers, question_to_index)
+      percent_correct += percent
+      j += 1
+    
+    percent_correct = percent_correct/1000
+    
+    output.write(str(i) + " percent correct: " + str(percent_correct) + " \n")
+    #print("percent correct is " + str(percent_correct))
+    #print("wrong tests are " + str(wrong))
+    #print()
+    i += 1
+  output.close()
+>>>>>>> 7276c469a5f3ad4fde3674d02af0f554aa9915b5
+
+if __name__ == '__main__':
+  learningCurve()
+  #i = 1
+  #while i < 11:
+    #output_file.write("Round " + str(i) + " \n")
+    #firstTraining()
+    #secondTraining()
+    #thirdTraining()
+    #fourthTraining()
+    #i += 1
+
+#output_file.close()
 
 
