@@ -235,8 +235,9 @@ class TreeRecurse:
         break
       if not j[0] == index: #don't recommend same song
         new_song = index_to_song[j[0]]
-        recommendations = recommendations + new_song + "\n"
-        count += 1
+        if not song.lower() in new_song.lower() and not "costumes" in new_song.lower(): 
+          recommendations = recommendations + new_song + "\n"
+          count += 1
     # print(recommendations)
     #displays recommendations to the user--need to fix formatting
     self.message.configure(text = recommendations)
