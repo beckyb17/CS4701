@@ -304,14 +304,9 @@ def thirdTraining():
   [0,0,0,2,5,0,0,2,2,1,1,4],[0,0,0,1,4,5,0,3,2,0,0,5],[1,1,1,2,3,5,2,0,1,0,6],[1,0,1,5,1,4,0,2,0,1,0,7],
   [1,0,1,1,0,1,0,1,2,1,0,8],[1,0,0,2,5,4,0,2,1,1,1,9],
   [1,1,1,0,0,2,3,0,0,1,0,0],[1,0,1,3,2,5,2,4,0,1,0,1],[0,0,1,4,3,6,0,0,2,0,1,2],[0,0,0,4,4,6,0,0,2,0,0,3],
-<<<<<<< HEAD
-  [1,0,1,1,0,1,0,1,2,1,0,8],[0,0,0,2,4,4,0,2,0,0,0,9],
-  [0,0,0,2,1,0,0,1,2,1,1,9], [0,0,0,2,4,4,0,2,0,0,0,9], 
-=======
   [0,0,0,1,5,3,0,2,2,1,1,4],[0,0,0,1,4,5,0,3,2,0,0,5],[1,1,1,2,3,5,2,0,1,0,6],[1,1,0,5,3,2,2,2,0,1,0,7],
   [1,0,1,1,0,1,0,1,2,1,0,8],[0,0,0,2,4,4,0,2,0,0,0,9]]
   [[0,0,0,2,1,0,0,1,2,1,1,9], [0,0,0,2,4,4,0,2,0,0,0,9], 
->>>>>>> 7276c469a5f3ad4fde3674d02af0f554aa9915b5
   [1,1,1,0,0,1,3,0,0,1,0,0],[1,1,1,3,2,5,2,4,0,1,0,1],[0,0,0,4,3,6,0,0,2,0,1,2],
   [0,0,0,2,5,0,0,2,2,1,1,4],[0,0,0,1,4,5,0,3,2,0,0,5],[1,1,1,2,3,5,2,0,1,0,6],[1,0,1,5,1,4,0,2,0,1,0,7],
   [1,0,1,1,0,1,0,1,2,1,0,8],[0,0,0,2,5,4,0,2,1,1,1,9],
@@ -500,12 +495,7 @@ def fourthTraining():
   #print("wrong tests are " + str(wrong))
   print()
 
-<<<<<<< HEAD
-def fifthTraining():
-  output_file.write("Test 5 \n")
-=======
 def learningCurve():
->>>>>>> 7276c469a5f3ad4fde3674d02af0f554aa9915b5
   city_to_num = {0: "New York", 1:"Boston", 2:"Ithaca", 3:"Austin",
   4:"Charlotte", 5:"San Francisco", 6:"Los Angeles", 7:"Seattle", 8:"Miami",
   9:"Nashville", 10:"Chicago"}
@@ -528,30 +518,6 @@ def learningCurve():
   32:"Do you prefer a liberal neighborhood over a conservative one?", 
   33:"Are you okay with humid summers?"}
 
-<<<<<<< HEAD
-  size_to_num = {0:"Small", 1:"Big"}
-
-  pop_density_to_num = {0:"Small", 1:"Big"}
-
-  cost_living_to_num = {0:"Low", 1:"High"}
-
-  industry_to_num = {0:"Finance", 1:"Tech", 2:"Business", 3:"Medicine", 4:"Education",
-  5:"Entertainment", 6:"Music"}
-
-  food_to_num = {0:"Italian", 1:"Mexican", 2:"Seafood", 3:"Vegetarian", 4:"Fried food", 5:"Barbecque"}
-
-  activity_to_num = {0:"Sports", 1:"Museums", 2:"Bars", 3:"Hiking", 4:"Beach", 5:"Shopping",6:"Skiing"}
-
-  transportation = {0:"Drive", 1:"Walk", 2:"Bus", 3:"Metro"}
-
-  weather_and_temp = {0:"Snow", 1:"Sunny", 2:"Moderate", 3:"Humid", 4:"Rain", 5:"Dry"}
-
-  type_of_house = {0:"Apartment", 1:"House"}
-
-  #speak_multiple_language = {0:"No", 1:"Yes"}
-
-=======
->>>>>>> 7276c469a5f3ad4fde3674d02af0f554aa9915b5
   politics = {0:"liberal", 1:"conservative"}
 
   question_to_index = {1:0,2:1,3:2,4:3,5:3,6:3,7:3,8:3,9:3,10:3,11:4,12:4,13:4,14:4,
@@ -632,43 +598,9 @@ def learningCurve():
   [1,1,1,2,4,5,0,0,4,0,0,10],
   [1,1,1,1,4,5,2,0,5,1,0,10]] 
 
-<<<<<<< HEAD
-  import pandas as pd
-  from sklearn.model_selection import train_test_split
-  from sklearn import tree
-
-  df = pd.DataFrame(dataset)
-  x = df.iloc[:,:11]   # Second column until the last column
-  y = df.iloc[:,11]
-  x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=.2)
-  dtree = tree.DecisionTreeClassifier()
-  dtree.fit(x_train, y_train)
-  pred = dtree.predict(x_test)
-  from sklearn.metrics import accuracy_score
-  print(accuracy_score(y_test, pred))
-  dtree = tree.DecisionTreeClassifier(criterion='gini')
-  dtree.fit(x_train, y_train)
-  pred = dtree.predict(x_test)
-  print('Criterion=gini', accuracy_score(y_test, pred))
-  dtree = tree.DecisionTreeClassifier(criterion='entropy')
-  dtree.fit(x_train, y_train)
-  pred = dtree.predict(x_test)
-  print('Criterion=entropy', accuracy_score(y_test, pred))
-
-if __name__ == '__main__':
-  # i = 1
-  # while i < 11:
-    # output_file.write("Round " + str(i) + " \n")
-    # firstTraining()
-    # secondTraining()
-    # thirdTraining()
-    # fourthTraining()
-    # i += 1
-  fifthTraining()
-=======
   output = open('learningcurve.txt', 'w')
   i = 1
-  while i < 10:
+  while i < 11:
     total = range(len(dataset))
     #change the sizes of the training v. test set
     train_rows = random.sample(total, int((i/10)*len(dataset)))
@@ -678,7 +610,17 @@ if __name__ == '__main__':
         train_set.append(dataset[k])
     
     #create a separate test set for the learning curve
-    test_set = [[1,1,1,0,0,5,3,0,3,0,0,0],]
+    test_set = [[1,1,1,0,0,5,3,0,3,0,0,0], [1,1,1,0,0,2,1,0,3,0,0,0], 
+    [0,1,1,3,2,3,3,0,3,0,0,1],[1,1,1,3,2,3,3,0,3,1,0,1],
+    [0,0,0,4,3,6,0,0,3,1,0,2],[0,0,0,3,2,3,0,0,3,1,0,2],
+    [0,0,0,1,4,2,0,1,5,1,1,3],[0,0,0,1,5,5,0,1,5,1,0,3],
+    [0,0,0,3,5,0,0,2,3,1,1,4],[0,0,0,3,5,5,0,2,5,1,1,4],
+    [1,1,1,1,1,3,2,2,5,0,0,5],[1,1,1,1,3,3,2,2,5,0,0,5],
+    [1,1,0,5,3,4,0,1,5,1,0,6],[1,1,0,5,3,3,0,1,5,0,0,6],
+    [0,0,1,1,2,6,0,0,4,0,0,7],[0,0,1,1,0,3,0,0,4,0,0,7],
+    [0,0,0,2,1,4,0,1,3,1,1,8],[0,0,0,2,1,0,2,1,3,1,1,8],
+    [0,0,0,6,4,1,0,2,5,1,1,9],[0,0,0,5,4,3,0,1,3,1,1,9],
+    [1,1,1,2,0,2,2,0,5,0,0,10],[1,1,1,1,0,5,1,0,5,0,0,10]]
     questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34]
 
     percent_correct = 0
@@ -700,7 +642,6 @@ if __name__ == '__main__':
     #print()
     i += 1
   output.close()
->>>>>>> 7276c469a5f3ad4fde3674d02af0f554aa9915b5
 
 if __name__ == '__main__':
   learningCurve()
