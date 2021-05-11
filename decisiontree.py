@@ -4,8 +4,15 @@ class TreeNode:
     self.yes = yes
     self.no = no
 
-#given a question, breaks the set into "yes" answers and "no" answers
 def breakInputs(question_num, set_remaining, question_to_index, question_to_yes_answers):
+  """
+  Breaks the set into "yes" answers and "no" answers for a specific question
+  question_num: int
+  set_remaining: list
+  question_to_index: dic
+  question_to_yes_answers: dic
+  Returns: list, list
+  """
   true = []
   false = []
   index = question_to_index[question_num]
@@ -19,6 +26,11 @@ def breakInputs(question_num, set_remaining, question_to_index, question_to_yes_
 
 #returns the frequency of the class for a specific question
 def numOfClasses(lst):
+  """
+  Returns the frequency of each class for a specific question
+  lst: list 
+  Returns: dic
+  """
   freqs = {}
   for inp in lst:
     cl = inp[-1]  #class is the last entry
@@ -30,6 +42,11 @@ def numOfClasses(lst):
 
 #computes the gini impurity for a specific list of either true/false answers
 def computeGini(lst):
+  """
+  Computes the gini impurity for a specific list of either true or false answers
+  lst: list
+  Returns: int
+  """
   class_freq = numOfClasses(lst)
   gini_sum = 0
   for cl in class_freq:
@@ -37,40 +54,57 @@ def computeGini(lst):
     gini_sum += prob * (1-prob)
   return gini_sum
 
-def infoGain(parent_infogain, true_input, false_input, gini_true, gini_false):
+def avgGini(true_input, false_input, gini_true, gini_false):
+  """
+  Computes the average of the true and false gini impurities for a specific node
+  true_input: list
+  false_input: list
+  gini_true: int
+  gini_false: int
+  Returns: int
+  """
   total_length = len(true_input) + len(false_input)
   avg_gini = (len(true_input) * gini_true)/total_length + (len(false_input) * gini_false)/total_length
   return avg_gini
-  #return parent_infogain - avg_gini
 
 #determines the correct question
-def get_question(parent_infogain, dataset, possible_questions, question_to_index, question_to_yes_answers):
+def get_question(dataset, possible_questions, question_to_index, question_to_yes_answers):
+  """
+  Determines the best question to split the data at a specific node
+  dataset: list of lists
+  possible_questions: list
+  question_to_index: dic
+  question_to_yes_answers: dic
+  Returns: string, int, list, list
+  """
   best_q = 0
   highest_gi = 2
-  #highest_ig = 0
   true_set = []
   false_set = []
   for qu in possible_questions:
     true_data, false_data = breakInputs(qu, dataset, question_to_index, question_to_yes_answers) #get true and false sets
     true_gini = computeGini(true_data)
     false_gini = computeGini(false_data)
-    #right now just using the highest gini impurity--can play around with
-    #other types (info gain (related to gi) and entropy) to see which is best
-    info_gain = infoGain(parent_infogain, true_data, false_data, true_gini, false_gini)
-    if info_gain < highest_gi:
-      highest_gi = info_gain
+    avg_gini = avgGini(true_data, false_data, true_gini, false_gini)
+    if avg_gini < highest_gi:
+      highest_gi = avg_gini
       best_q = qu
       true_set = true_data
       false_set = false_data
   return best_q, highest_gi, true_set, false_set
 
-def create_Tree(dataset, prev_info_gain, questions, question_to_index, question_to_yes_answers):
-  #print("in create")
+def create_Tree(dataset, questions, question_to_index, question_to_yes_answers):
+  """
+  Creates the decision tree
+  dataset: list of lists
+  questions: list
+  question_to_index: dic
+  question_to_yes_answers: dic
+  """
   #base cases
   if len(dataset) == 0:
     #print("in if dataset")
     return TreeNode(0, None, None) #if nothing left in the dataset, return default of New York
-  
   #check if they're all the same class--if so create leaf node
   r = 0
   class_seen = -1
@@ -78,11 +112,11 @@ def create_Tree(dataset, prev_info_gain, questions, question_to_index, question_
   for i in dataset:
     #if first round,
     if r == 0:
-      print(i,class_seen)
+      #print(i,class_seen)
       class_seen = i[-1]
       r = 1
     else:
-      print(i,class_seen)
+      #print(i,class_seen)
       if not class_seen == i[-1]:
         all_same = False
   if all_same:
@@ -102,10 +136,10 @@ def create_Tree(dataset, prev_info_gain, questions, question_to_index, question_
     return TreeNode(most_common_city, None, None)
   
   #not base case
-  best_q, highest_ig, true_set, false_set = get_question(prev_info_gain, dataset, questions, question_to_index, question_to_yes_answers)
+  best_q, highest_ig, true_set, false_set = get_question(dataset, questions, question_to_index, question_to_yes_answers)
   questions.remove(best_q)
-  true_side = create_Tree(true_set, highest_ig, questions, question_to_index, question_to_yes_answers)
-  false_side = create_Tree(false_set, highest_ig, questions, question_to_index, question_to_yes_answers)
+  true_side = create_Tree(true_set, questions, question_to_index, question_to_yes_answers)
+  false_side = create_Tree(false_set, questions, question_to_index, question_to_yes_answers)
 
   return TreeNode(best_q, true_side, false_side)
 
