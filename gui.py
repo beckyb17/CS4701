@@ -118,7 +118,7 @@ start_message = tk.Label(master = window, text = "Welcome! The game will start s
 start_message.pack()
 """
 
-window.geometry("1200x500")
+window.geometry("1000x500")
 city_img = Image.open('city.jpg')
 city_img = city_img.resize((1200, 500), Image.ANTIALIAS)
 city = ImageTk.PhotoImage(city_img)
@@ -129,35 +129,34 @@ question_frame = tk.Frame(window)
 
 answer_frame = tk.Frame(window)
 
-question_frame.pack()
-answer_frame.pack()
+question_frame.pack(pady=100)
+#question_frame.grid(row=0, column=1)
+answer_frame.pack(pady=10, )
 class TreeRecurse:
 
   def __init__(self, window, tree, questions_to_num, city_to_num):
     self.StartButton = tk.Button(master = answer_frame, text = "Start", command = self.start,
-    font = ('Arial'), bg = "black")
+    font = ('Arialn'), bg = "black",height=3, width=10)
     self.node = tree
-    self.message = tk.Label(master = question_frame, text = "Find your new city!",
-    font = ('Arial, 25'), bg = "white")
-    self.message.place(x=500,y=500)
+    self.message = tk.Label(master = question_frame, text = "Find your new city!", font = ('Arial, 25'), bg = "white")
     self.message.pack()
     self.StartButton.pack()
 
     #buttons to be used later on
     self.YesButton = tk.Button(master = answer_frame, text = "Yes", command = self.getYesResult,
-    font = ('Arial'), bg = "black")
+    font = ('Arial'), bg = "black",height=3, width=10)
     self.NoButton = tk.Button(master = answer_frame, text = "No", command = self.getNoResult,
-    font = ('Arial'), bg = "black")
+    font = ('Arial'), bg = "black",height=3, width=10)
     self.ExitButton = tk.Button(master = answer_frame, text = "Exit", command = window.quit, 
-    font = ('Arial'), bg = "black")
+    font = ('Arial'), bg = "black",height=3, width=10)
     self.NextButton = tk.Button(master = answer_frame, text = "Next", command = self.next,
-    font = ('Arial'), bg = "black")
+    font = ('Arial'), bg = "black",height=3, width=10)
     self.EnterButton = tk.Button(master = answer_frame, text = "Enter", command = self.rank,
-    font = ('Arial'), bg = "black")
+    font = ('Arial'), bg = "black",height=3, width=10)
     #entry box to give the taylor swift song title
     self.Entry = tk.Entry(master = answer_frame)
     self.YesTSwift = tk.Button(master = answer_frame, text = "Yes please!", command = self.begin,
-    font = ('Arial'), bg = "black")
+    font = ('Arial'), bg = "black",height=3, width=10)
 
   def getYesResult(self):
     #"recurses" through yes side of tree
@@ -198,13 +197,15 @@ class TreeRecurse:
   #called after the city is recommended, option to get a taylor swift playlist
   def next(self):
     self.NextButton.destroy()
-    self.message.configure(text = "BONUS: Would you like a curated Taylor Swift playlist for your moving trip?",wraplength=1000)
+    self.message.configure(text = "BONUS!!"+"\n"+"Would you like a curated Taylor Swift playlist for your moving trip?",wraplength=800)
     self.YesTSwift.pack()
     self.ExitButton.pack()
 
   #asks user to enter the taylor swift song name
   def begin(self):
-    self.message.configure(text = "Please enter the name of your favorite Taylor Swift song and we will recommend a playlist of other Taylor Swift songs you will enjoy.",wraplength=1000)
+    self.YesTSwift.destroy()
+    self.ExitButton.destroy()
+    self.message.configure(text = "Please enter the name of your favorite Taylor Swift song and we will recommend a playlist of other Taylor Swift songs you will enjoy.",wraplength=800)
     self.Entry.pack()
     self.EnterButton.pack()
   
@@ -214,7 +215,7 @@ class TreeRecurse:
     if song.lower() in song_to_index:
       index = song_to_index[song.lower()]
     else:
-      self.message.configure(text = "Sorry, that song is not in the dataset. Please check the spelling and/or enter a different Taylor Swift song, or exit the window.",wraplength=1000)
+      self.message.configure(text = "Sorry, that song is not in our database. Please check the spelling and/or enter a different Taylor Swift song, or exit the window.",wraplength=800)
     cos_sim_matrix = np.array(np.load('cosine_matrix.npy'))
     sims = cos_sim_matrix[index]
     sims_dic = {}
@@ -234,9 +235,9 @@ class TreeRecurse:
         break
       if not j[0] == index: #don't recommend same song
         new_song = index_to_song[j[0]]
-        recommendations = recommendations + ", " + new_song
+        recommendations = recommendations + new_song + "\n"
         count += 1
-    print(recommendations)
+    # print(recommendations)
     #displays recommendations to the user--need to fix formatting
     self.message.configure(text = recommendations)
 
