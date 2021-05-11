@@ -128,6 +128,7 @@ city_label.place(x = 0, y = 0)
 question_frame = tk.Frame(window)
 
 answer_frame = tk.Frame(window)
+
 question_frame.pack()
 answer_frame.pack()
 class TreeRecurse:
@@ -138,6 +139,7 @@ class TreeRecurse:
     self.node = tree
     self.message = tk.Label(master = question_frame, text = "Find your new city!",
     font = ('Arial, 25'), bg = "white")
+    self.message.place(x=500,y=500)
     self.message.pack()
     self.StartButton.pack()
 
@@ -196,13 +198,13 @@ class TreeRecurse:
   #called after the city is recommended, option to get a taylor swift playlist
   def next(self):
     self.NextButton.destroy()
-    self.message.configure(text = "BONUS: Would you like a curated Taylor Swift playlist for your moving trip?")
+    self.message.configure(text = "BONUS: Would you like a curated Taylor Swift playlist for your moving trip?",wraplength=1000)
     self.YesTSwift.pack()
     self.ExitButton.pack()
 
   #asks user to enter the taylor swift song name
   def begin(self):
-    self.message.configure(text = "Please enter the name of your favorite Taylor Swift song and we will recommend a playlist of other Taylor Swift songs you will enjoy.")
+    self.message.configure(text = "Please enter the name of your favorite Taylor Swift song and we will recommend a playlist of other Taylor Swift songs you will enjoy.",wraplength=1000)
     self.Entry.pack()
     self.EnterButton.pack()
   
@@ -212,7 +214,7 @@ class TreeRecurse:
     if song.lower() in song_to_index:
       index = song_to_index[song.lower()]
     else:
-      self.message.configure(text = "Sorry, that song is not in the dataset. Please check the spelling and/or enter a different Taylor Swift song, or exit the window.")
+      self.message.configure(text = "Sorry, that song is not in the dataset. Please check the spelling and/or enter a different Taylor Swift song, or exit the window.",wraplength=1000)
     cos_sim_matrix = np.array(np.load('cosine_matrix.npy'))
     sims = cos_sim_matrix[index]
     sims_dic = {}
