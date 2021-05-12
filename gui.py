@@ -125,13 +125,16 @@ city = ImageTk.PhotoImage(city_img)
 city_label = tk.Label(window, image = city)
 city_label.place(x = 0, y = 0)
 
+songlst_frame = tk.Frame(window)
+
 question_frame = tk.Frame(window)
 
 answer_frame = tk.Frame(window)
+songlst_frame.pack(pady=(40,0))
 
-question_frame.pack(pady=100)
+question_frame.pack(pady=(40,10))
 #question_frame.grid(row=0, column=1)
-answer_frame.pack(pady=10, )
+answer_frame.pack(pady=50)
 class TreeRecurse:
 
   def __init__(self, window, tree, questions_to_num, city_to_num):
@@ -213,6 +216,11 @@ class TreeRecurse:
   def rank(self):
     song = self.Entry.get()
     if song.lower() in song_to_index:
+      self.Entry.destroy()
+      self.EnterButton.destroy()
+      answer_frame.destroy()
+      self.new_msg = tk.Label(master = songlst_frame, text = "Song recommendations for you!", font = ('Arial, 25'), bg = "white")
+      self.new_msg.pack()
       index = song_to_index[song.lower()]
     else:
       self.message.configure(text = "Sorry, that song is not in our database. Please check the spelling and/or enter a different Taylor Swift song, or exit the window.",wraplength=800)
@@ -235,8 +243,11 @@ class TreeRecurse:
         break
       if not j[0] == index: #don't recommend same song
         new_song = index_to_song[j[0]]
-        if not song.lower() in new_song.lower() and not "costumes" in new_song.lower(): 
+        if not song.lower() in new_song.lower() and not "costumes" in new_song.lower() and count<9: 
           recommendations = recommendations + new_song + "\n"
+          count += 1
+        elif not song.lower() in new_song.lower() and not "costumes" in new_song.lower() and count==9: 
+          recommendations = recommendations + new_song 
           count += 1
     # print(recommendations)
     #displays recommendations to the user--need to fix formatting
