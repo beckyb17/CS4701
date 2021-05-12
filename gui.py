@@ -126,7 +126,7 @@ city_label = tk.Label(window, image = city)
 city_label.place(x = 0, y = 0)
 
 songlst_frame = tk.Frame(window)
-
+pic_frame = tk.Frame(window)
 question_frame = tk.Frame(window)
 exit_frame = tk.Frame(window)
 
@@ -134,6 +134,7 @@ answer_frame = tk.Frame(window)
 songlst_frame.pack(pady=(40,0))
 
 question_frame.pack(pady=(40,10))
+pic_frame.pack()
 exit_frame.pack()
 #question_frame.grid(row=0, column=1)
 answer_frame.pack(pady=50)
@@ -145,6 +146,8 @@ class TreeRecurse:
     self.node = tree
     self.message = tk.Label(master = question_frame, text = "Find your new city!", font = ('Arial, 25'), bg = "white")
     self.message.pack()
+    # self.answer = tk.Label(master = question_frame, text = "Find your new city!", font=('Helvetica 18 bold'), bg = "white")
+    # self.answer.pack()
     self.StartButton.pack()
 
     #buttons to be used later on
@@ -181,6 +184,10 @@ class TreeRecurse:
     #"recurses" through no side of tree
     print("in no")
     if self.node.no.yes == None and self.node.no.no == None:
+      # boston_img = Image.open('boston.jpg')
+      # boston = ImageTk.PhotoImage(boston_img)
+      # self.pic = tk.Label(pic_frame, image = boston)
+      # self.pic.pack()
       city_result = city_to_num[self.node.no.num]
       self.message.configure(text = "You should move to " + city_result + "!")
       self.YesButton.destroy()
