@@ -3,7 +3,7 @@ import tkinter as tk
 from functools import partial
 import time
 from PIL import Image, ImageTk
-from cosinesim import song_to_index, index_to_song
+from cosinesim import song_to_index, index_to_song,index_to_song_org
 import numpy as np
 
 
@@ -119,7 +119,7 @@ start_message.pack()
 """
 
 window.geometry("1000x500")
-city_img = Image.open('city.jpg')
+city_img = Image.open('pinned.jpg')
 city_img = city_img.resize((1200, 500), Image.ANTIALIAS)
 city = ImageTk.PhotoImage(city_img)
 city_label = tk.Label(window, image = city)
@@ -128,11 +128,13 @@ city_label.place(x = 0, y = 0)
 songlst_frame = tk.Frame(window)
 
 question_frame = tk.Frame(window)
+exit_frame = tk.Frame(window)
 
 answer_frame = tk.Frame(window)
 songlst_frame.pack(pady=(40,0))
 
 question_frame.pack(pady=(40,10))
+exit_frame.pack()
 #question_frame.grid(row=0, column=1)
 answer_frame.pack(pady=50)
 class TreeRecurse:
@@ -242,7 +244,7 @@ class TreeRecurse:
       if count >= 10:
         break
       if not j[0] == index: #don't recommend same song
-        new_song = index_to_song[j[0]]
+        new_song = index_to_song_org[j[0]]
         if not song.lower() in new_song.lower() and not "costumes" in new_song.lower() and count<9: 
           recommendations = recommendations + new_song + "\n"
           count += 1
@@ -252,6 +254,9 @@ class TreeRecurse:
     # print(recommendations)
     #displays recommendations to the user--need to fix formatting
     self.message.configure(text = recommendations)
+    self.ExitOut = tk.Button(master = exit_frame, text = "Exit", command = window.quit, 
+    font = ('Arial'), bg = "black",height=3, width=10)
+    self.ExitOut.pack()
 
 
 

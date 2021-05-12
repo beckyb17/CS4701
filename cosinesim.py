@@ -10,6 +10,7 @@ df_dict = df.to_dict(orient = 'records')
 #song to index maps song titles to their index
 #index dic maps song index to a list of its lyrics
 song_to_index = {}
+original_index = {}
 index_dic = {}
 current_song = "Lover" #first song in dataset
 index = 0
@@ -25,10 +26,13 @@ for i in df_dict:
       index_dic[index] = [lyric]
       title = i['song_title'].lower().strip()
       song_to_index[title] = index 
+      original_index[i['song_title'].strip()] = index
 
-index_to_song = {index:song for song, index in song_to_index.items()} #https://dev.to/petercour/swap-keys-and-values-in-a-python-dictionary-1njn
+index_to_song = {index:song for song, index in song_to_index.items()}
+index_to_song_org = {index:song for song, index in original_index.items()} #https://dev.to/petercour/swap-keys-and-values-in-a-python-dictionary-1njn
 num_songs = len(song_to_index)
 #print(song_to_index)
+print(index_to_song_org)
 
 vectorizer = TfidfVectorizer(stop_words = 'english', min_df = 2)
 
