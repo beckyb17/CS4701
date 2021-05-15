@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
 import re
+from nltk.stem import PorterStemmer
 
 df = pd.read_csv('final_taylor_swift_lyrics.tsv', sep='\t')
 
@@ -41,8 +42,10 @@ word_splitter = re.compile(r"""
   (\w+)
   """, re.VERBOSE)
 
-def getwords(lyric):
-  return [w.lower() for w in word_splitter.findall(lyric)]
+#def getwords(lyric):
+  #return [w.lower() for w in word_splitter.findall(lyric)]
+
+stemmer = PorterStemmer()
 
 #create a list of the lyrics for each song
 lyrics_list = []
@@ -53,7 +56,8 @@ for i in index_dic:
       l.lower()
       lyric_str += " "
       lyric_str += l
-  all_words = getwords(lyric_str)
+  all_words = [w.lower() for w in word_splitter.findall(lyric_str)]
+  stemmed_words = [stemmer.stem(w) for w in all_words]
   lyrics_list.append(" ".join(all_words))
 
 #create the tf-idf matrix

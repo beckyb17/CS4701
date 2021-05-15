@@ -1,3 +1,5 @@
+import math
+
 class TreeNode:
   def __init__(self, num, yes, no):
     self.num = num
@@ -78,7 +80,7 @@ def get_question(dataset, possible_questions, question_to_index, question_to_yes
   Returns: string, int, list, list
   """
   best_q = 0
-  highest_gi = 2
+  best_gi = 2
   true_set = []
   false_set = []
   for qu in possible_questions:
@@ -86,14 +88,28 @@ def get_question(dataset, possible_questions, question_to_index, question_to_yes
     true_gini = computeGini(true_data)
     false_gini = computeGini(false_data)
     avg_gini = avgGini(true_data, false_data, true_gini, false_gini)
-    if avg_gini < highest_gi:
-      highest_gi = avg_gini
+    if avg_gini < best_gi:
+      best_gi = avg_gini
       best_q = qu
       true_set = true_data
       false_set = false_data
-  return best_q, highest_gi, true_set, false_set
+  return best_q, best_gi, true_set, false_set
 
-def create_Tree(dataset, questions, question_to_index, question_to_yes_answers):
+def highestFrequency(dataset):
+  """
+  Returns the city with the highest frequency out of the remaining dataset
+  datset: list of lists
+  """
+  city_frequency = numOfClasses(dataset)
+  most_common_city = -1
+  highest_freq = 0
+  for city in city_frequency:
+    if city_frequency[city] > highest_freq:
+      most_common_city = city
+      highest_freq = city_frequency[city]
+  return TreeNode(most_common_city, None, None)
+
+def create_Tree(dataset, parent_gi, questions, question_to_index, question_to_yes_answers):
   """
   Creates the decision tree
   dataset: list of lists
@@ -101,6 +117,7 @@ def create_Tree(dataset, questions, question_to_index, question_to_yes_answers):
   question_to_index: dic
   question_to_yes_answers: dic
   """
+  
   #base cases
   if len(dataset) == 0:
     #print("in if dataset")
@@ -125,21 +142,19 @@ def create_Tree(dataset, questions, question_to_index, question_to_yes_answers):
   
   #check if there's no more questions left--if so return city with highest freq
   if len(questions) == 0:
-    #print("in if questions")
-    city_frequency = numOfClasses(dataset)
-    most_common_city = -1
-    highest_freq = 0
-    for city in city_frequency:
-      if city_frequency[city] > highest_freq:
-        most_common_city = city
-        highest_freq = city_frequency[city]
-    return TreeNode(most_common_city, None, None)
-  
+    return highestFrequency(dataset)
+
   #not base case
-  best_q, highest_ig, true_set, false_set = get_question(dataset, questions, question_to_index, question_to_yes_answers)
+  best_q, best_gi, true_set, false_set = get_question(dataset, questions, question_to_index, question_to_yes_answers)
   questions.remove(best_q)
-  true_side = create_Tree(true_set, questions, question_to_index, question_to_yes_answers)
-  false_side = create_Tree(false_set, questions, question_to_index, question_to_yes_answers)
+
+  #print(best_gi)
+  #pre pruning: if the new gi isn't a significant improvement, don't break (becomes a leaf)
+  if abs(parent_gi - best_gi) < .00001:
+    return highestFrequency(dataset)
+
+  true_side = create_Tree(true_set, best_gi, questions, question_to_index, question_to_yes_answers)
+  false_side = create_Tree(false_set, best_gi, questions, question_to_index, question_to_yes_answers)
 
   return TreeNode(best_q, true_side, false_side)
 

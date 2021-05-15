@@ -343,7 +343,7 @@ def thirdTraining():
   print()
 
 def fourthTraining():
-  output_file.write("Test 4 \n")
+  #output_file.write("Test 4 \n")
   city_to_num = {0: "New York", 1:"Boston", 2:"Ithaca", 3:"Austin",
   4:"Charlotte", 5:"San Francisco", 6:"Los Angeles", 7:"Seattle", 8:"Miami",
   9:"Nashville", 10:"Chicago"}
@@ -466,35 +466,42 @@ def fourthTraining():
   [1,1,1,1,4,2,0,0,4,1,0,10],
   [1,1,1,2,4,5,0,0,4,0,0,10],
   [1,1,1,1,4,5,2,0,5,1,0,10]] 
+  k = 0
+  avg_correct = 0
+  while k < 10:
+    total = list(range(len(dataset)))
+    train_rows = random.sample(total, int(.8*len(dataset)))
+    test_set = []
+    train_set = []
+    for i in total:
+      if i in train_rows:
+        train_set.append(dataset[i])
+      else:
+        test_set.append(dataset[i])
 
-  total = list(range(len(dataset)))
-  train_rows = random.sample(total, int(.8*len(dataset)))
-  test_set = []
-  train_set = []
-  for i in total:
-    if i in train_rows:
-      train_set.append(dataset[i])
-    else:
-      test_set.append(dataset[i])
-  
-  questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34]
+    questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34]
 
-  percent_correct = 0
-  j = 0
-  while j < 1000:
-  #create the tree on this dataset
-    questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33]
-    create_tree = decisiontree.create_Tree(train_set, questions, question_to_index, question_to_yes_answers)
-    #test the test set
-    percent, wrong = testSet(create_tree, test_set, question_to_yes_answers, question_to_index)
-    percent_correct += percent
-    j += 1
-  percent_correct = percent_correct/1000
-  output_file.write("Percent correct: " + str(percent_correct) + " \n")
-  print("percent correct is " + str(percent_correct))
-  #print("wrong tests are " + str(wrong))
-  print()
-
+    #percent_correct = 0
+    percent_correct = 0
+    print("round")
+    j = 0
+    while j < 100:
+    #create the tree on this dataset
+      questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33]
+      create_tree = decisiontree.create_Tree(train_set, 2, questions, question_to_index, question_to_yes_answers)
+      #test the test set
+      percent, wrong = testSet(create_tree, test_set, question_to_yes_answers, question_to_index)
+      percent_correct += percent
+      j += 1
+    percent_correct = percent_correct/100
+    avg_correct += percent_correct
+    #output_file.write("Percent correct: " + str(percent_correct) + " \n")
+    print("percent correct is " + str(percent_correct))
+    #print("wrong tests are " + str(wrong))
+    print()
+    k += 1
+  avg_correct = avg_correct/10
+  print("average correct is " + str(avg_correct))
 def learningCurve():
   city_to_num = {0: "New York", 1:"Boston", 2:"Ithaca", 3:"Austin",
   4:"Charlotte", 5:"San Francisco", 6:"Los Angeles", 7:"Seattle", 8:"Miami",
@@ -644,14 +651,14 @@ def learningCurve():
   output.close()
 
 if __name__ == '__main__':
-  learningCurve()
+  #learningCurve()
   #i = 1
   #while i < 11:
     #output_file.write("Round " + str(i) + " \n")
     #firstTraining()
     #secondTraining()
     #thirdTraining()
-    #fourthTraining()
+    fourthTraining()
     #i += 1
 
 #output_file.close()
