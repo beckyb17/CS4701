@@ -4,8 +4,8 @@ import numpy as np
 import re
 from nltk.stem import PorterStemmer
 
+#open dataset and convert into a dictionary
 df = pd.read_csv('final_taylor_swift_lyrics.tsv', sep='\t')
-
 df_dict = df.to_dict(orient = 'records')
 
 #song to index maps song titles to their index
@@ -15,8 +15,9 @@ original_index = {}
 index_dic = {}
 current_song = "Lover" #first song in dataset
 index = 0
+#create the index dic
 for i in df_dict:
-  #song lyrics span multiple entries
+  #song lyrics span multiple entries (combine here)
   if i['song_title'].lower().strip() != current_song.lower().strip():
       index += 1
       current_song = i['song_title']
@@ -32,18 +33,14 @@ for i in df_dict:
 index_to_song = {index:song for song, index in song_to_index.items()}
 index_to_song_org = {index:song for song, index in original_index.items()} #https://dev.to/petercour/swap-keys-and-values-in-a-python-dictionary-1njn
 num_songs = len(song_to_index)
-#print(song_to_index)
-#print(index_to_song_org)
 
+#create the vectorizer object
 vectorizer = TfidfVectorizer(stop_words = 'english', min_df = 2)
 
 #code from 4300 class demo
 word_splitter = re.compile(r"""
   (\w+)
   """, re.VERBOSE)
-
-#def getwords(lyric):
-  #return [w.lower() for w in word_splitter.findall(lyric)]
 
 stemmer = PorterStemmer()
 
@@ -56,7 +53,7 @@ for i in index_dic:
       l.lower()
       lyric_str += " "
       lyric_str += l
-  all_words = [w.lower() for w in word_splitter.findall(lyric_str)]
+  all_words = [w.lower() for w in word_splitter.findall(lyric_str)] #code from 4300 class demo
   stemmed_words = [stemmer.stem(w) for w in all_words]
   lyrics_list.append(" ".join(all_words))
 
@@ -65,6 +62,8 @@ tfidf_vec = vectorizer.fit_transform(lyrics_list).toarray()
 
 #create a cos sim matrix initialized with zeros
 cos_sim = np.zeros((num_songs,num_songs))
+
+#compute the cosine similarity between all of the songs
 i = 0
 while i < num_songs:
   j = 0
@@ -77,6 +76,7 @@ while i < num_songs:
     numerator = np.dot(song1, song2)
     denominator = song1_norm * song2_norm
     cosine_similarity = numerator/denominator
+    #add cosine similarity to the matrix
     cos_sim[i][j] = cosine_similarity
     j += 1
   i += 1

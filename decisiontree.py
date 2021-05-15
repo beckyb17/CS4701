@@ -99,6 +99,7 @@ def highestFrequency(dataset):
   """
   Returns the city with the highest frequency out of the remaining dataset
   datset: list of lists
+  Returns: tree node
   """
   city_frequency = numOfClasses(dataset)
   most_common_city = -1
@@ -120,24 +121,21 @@ def create_Tree(dataset, parent_gi, questions, question_to_index, question_to_ye
   
   #base cases
   if len(dataset) == 0:
-    #print("in if dataset")
     return TreeNode(0, None, None) #if nothing left in the dataset, return default of New York
+
   #check if they're all the same class--if so create leaf node
   r = 0
   class_seen = -1
   all_same = True
   for i in dataset:
-    #if first round,
+    #if first round
     if r == 0:
-      #print(i,class_seen)
       class_seen = i[-1]
       r = 1
     else:
-      #print(i,class_seen)
       if not class_seen == i[-1]:
         all_same = False
   if all_same:
-    #print("in all same")
     return TreeNode(class_seen, None, None) #leaf node where the number is the city
   
   #check if there's no more questions left--if so return city with highest freq
@@ -148,9 +146,8 @@ def create_Tree(dataset, parent_gi, questions, question_to_index, question_to_ye
   best_q, best_gi, true_set, false_set = get_question(dataset, questions, question_to_index, question_to_yes_answers)
   questions.remove(best_q)
 
-  #print(best_gi)
   #pre pruning: if the new gi isn't a significant improvement, don't break (becomes a leaf)
-  if abs(parent_gi - best_gi) < .00001:
+  if abs(parent_gi - best_gi) < .01:
     return highestFrequency(dataset)
 
   true_side = create_Tree(true_set, best_gi, questions, question_to_index, question_to_yes_answers)
@@ -158,8 +155,9 @@ def create_Tree(dataset, parent_gi, questions, question_to_index, question_to_ye
 
   return TreeNode(best_q, true_side, false_side)
 
-
+"""
 def getResult(node):
+
   if node.yes == None and node.no == None:
     city_result = city_to_num[node.num]
     return city_result
@@ -171,15 +169,4 @@ def getResult(node):
   else:
     return getResult(node.no)
 
-
-"""
-def main():
-  print("in main")
-  questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]
-  tree = create_Tree(train_set, 1, questions)
-  result = getResult(tree)
-  print(result)
-
-if __name__ == '__main__':
-  main()
 """
