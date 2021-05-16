@@ -163,8 +163,12 @@ class TreeRecurse:
     font = ('Arial'), bg = "black",height=3, width=10)
     #entry box to give the taylor swift song title
     self.Entry = tk.Entry(master = answer_frame)
-    self.YesTSwift = tk.Button(master = answer_frame, text = "Yes please!", command = self.begin,
+    self.YesTSwift = tk.Button(master = answer_frame, text = "Yes please!", command = self.getDistance,
     font = ('Arial'), bg = "black",height=3, width=10)
+    self.EnterDistance = tk.Entry(master = answer_frame)
+    self.DistanceEntry = tk.Button(master = answer_frame, text = "Enter", command = self.begin,
+    font = ('Arial'), bg = "black", height=3, width=10)
+    self.num_hours = 3
 
   def getYesResult(self):
     #"recurses" through yes side of tree
@@ -215,12 +219,38 @@ class TreeRecurse:
 
   #asks user to enter the taylor swift song name
   def begin(self):
-    self.YesTSwift.destroy()
-    self.ExitButton.destroy()
+    self.num_hours = self.EnterDistance.get()
+    self.EnterDistance.destroy()
+    self.DistanceEntry.destroy()
     self.message.configure(text = "Please enter the name of your favorite Taylor Swift song and we will recommend a playlist of other Taylor Swift songs you will enjoy.",wraplength=800)
     self.Entry.pack()
     self.EnterButton.pack()
-  
+
+  def getDistance(self):
+    self.YesTSwift.destroy()
+    self.ExitButton.destroy()
+    self.message.configure(text = "Please enter the distance (in hours) from your current city to your new city.",wraplength=800)
+    self.EnterDistance.pack()
+    self.DistanceEntry.pack()
+    #self.num_hours = self.EnterDistance.get()
+
+  def getRecommendations(self, index, song, cos_sims_sorted, max):
+    recommendations = ""
+    count = 0
+    #display top "max" relevant songs
+    for j in cos_sims_sorted:
+      if count >= max:
+        break
+      if not j[0] == index: #don't recommend same song
+        new_song = index_to_song_org[j[0]]
+        if not song.lower() in new_song.lower() and not "costumes" in new_song.lower() and count< max-1: 
+          recommendations = recommendations + new_song + "\n"
+          count += 1
+        elif not song.lower() in new_song.lower() and not "costumes" in new_song.lower() and count== max-1: 
+          recommendations = recommendations + new_song 
+          count += 1
+    return recommendations
+
   #computes the ranking and outputs the top 10 similar songs
   def rank(self):
     song = self.Entry.get()
@@ -228,7 +258,7 @@ class TreeRecurse:
       self.Entry.destroy()
       self.EnterButton.destroy()
       answer_frame.destroy()
-      self.new_msg = tk.Label(master = songlst_frame, text = "Song recommendations for you!", font = ('Arial, 25'), bg = "white")
+      self.new_msg = tk.Label(master = songlst_frame, text = "The playlist for your move:", font = ('Arial, 25'), bg = "white")
       self.new_msg.pack()
       index = song_to_index[song.lower()]
     else:
@@ -244,20 +274,17 @@ class TreeRecurse:
       sims_dic[i] = cos_sim
       i += 1
     cos_sims_sorted = sorted(sims_dic.items(), key = lambda pair:pair[1], reverse = True)
-    recommendations = ""
-    count = 0
-    #display top 10 relevant songs
-    for j in cos_sims_sorted:
-      if count >= 10:
-        break
-      if not j[0] == index: #don't recommend same song
-        new_song = index_to_song_org[j[0]]
-        if not song.lower() in new_song.lower() and not "costumes" in new_song.lower() and count<9: 
-          recommendations = recommendations + new_song + "\n"
-          count += 1
-        elif not song.lower() in new_song.lower() and not "costumes" in new_song.lower() and count==9: 
-          recommendations = recommendations + new_song 
-          count += 1
+
+    #changing number of songs recommended based on distance--need to fix formatting
+    if int(self.num_hours) < 2:
+      recommendations = self.getRecommendations(index, song, cos_sims_sorted, 10)
+    elif int(self.num_hours) < 5:
+      recommendations = self.getRecommendations(index, song, cos_sims_sorted, 15)
+    elif int(self.num_hours) < 10:
+      recommendations = self.getRecommendations(index, song, cos_sims_sorted, 20)
+    else:
+      recommendations = self.getRecommendations(index, song, cos_sims_sorted, 25)
+    print("recommendations are " + recommendations)
     # print(recommendations)
     #displays recommendations to the user--need to fix formatting
     self.message.configure(text = recommendations)
