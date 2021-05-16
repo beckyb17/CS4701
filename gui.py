@@ -174,6 +174,7 @@ class TreeRecurse:
     #"recurses" through yes side of tree
     print("in yes")
     if self.node.yes.yes == None and self.node.yes.no == None:
+      self.city_num = self.node.yes.num
       city_result = city_to_num[self.node.yes.num]
       self.message.configure(text = "You should move to " + city_result + "!")
       self.YesButton.destroy()
@@ -193,6 +194,7 @@ class TreeRecurse:
       # self.pic = tk.Label(pic_frame, image = boston)
       # self.pic.pack()
       city_result = city_to_num[self.node.no.num]
+      self.city_num = self.node.no.num
       self.message.configure(text = "You should move to " + city_result + "!")
       self.YesButton.destroy()
       self.NoButton.destroy()
@@ -246,7 +248,7 @@ class TreeRecurse:
         if not song.lower() in new_song.lower() and not "costumes" in new_song.lower() and count< max-1: 
           recommendations = recommendations + new_song + "\n"
           count += 1
-        elif not song.lower() in new_song.lower() and not "costumes" in new_song.lower() and count== max-1: 
+        elif not song.lower() in new_song.lower() and not "costumes" in new_song.lower() and not "concert genius" in new_song.lower() and count== max-1: 
           recommendations = recommendations + new_song 
           count += 1
     return recommendations
@@ -264,14 +266,18 @@ class TreeRecurse:
     else:
       self.message.configure(text = "Sorry, that song is not in our database. Please check the spelling and/or enter a different Taylor Swift song, or exit the window.",wraplength=800)
     cos_sim_matrix = np.array(np.load('cosine_matrix.npy'))
+    set_sim_matrix = np.array(np.load("set_matrix.npy"))
     sims = cos_sim_matrix[index]
+    set_sims = set_sim_matrix[self.city_num]
     sims_dic = {}
     i = 0
 
     #sort the cosine similarities from highest to smallest
     while i < len(sims):
       cos_sim = sims[i]
+      set_sim = set_sims[i]
       sims_dic[i] = cos_sim
+      #sims_dic[i] = cos_sim*.75 + set_sim*.25
       i += 1
     cos_sims_sorted = sorted(sims_dic.items(), key = lambda pair:pair[1], reverse = True)
 
@@ -284,7 +290,7 @@ class TreeRecurse:
       recommendations = self.getRecommendations(index, song, cos_sims_sorted, 20)
     else:
       recommendations = self.getRecommendations(index, song, cos_sims_sorted, 25)
-    print("recommendations are " + recommendations)
+    #print("recommendations are " + recommendations)
     # print(recommendations)
     #displays recommendations to the user--need to fix formatting
     self.message.configure(text = recommendations)
