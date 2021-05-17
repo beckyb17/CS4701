@@ -139,8 +139,7 @@ def evaluateDF(cos_sim, random_nums):
   """
   avg_sims = []
   for i in random_nums:
-
-    sim = cos_sim[i]
+    cos_sim = cos_sim[i]
     sim = np.sort(sim)
     j = np.shape(sim)
     j = j[0] - 2 #don't want first b/c that is itself
@@ -187,28 +186,55 @@ def printDifferences(ns_avgs, s_avgs):
   print("Average improvement")
   print(sum_diff)
 
-def evaluateTopTen(cos_sim, random_nums):
-  avg_sims = []
-  for i in random_nums:
-    sim = cos_sim[i]
-    #sim.sort(reverse=True)
-    #sim = sim[::-1]
-    #print(sim)
-    sim = np.sort(sim)
-    j = np.shape(sim)
-    j = j[0] - 2 #don't want first b/c that is itself
-    count = 0
-    cossim = []
-    while count < 10:
-      cossim.append(sim[j])
-      j = j - 1
-      count += 1
-    avg_sims.append(cossim)
+def evaluateTopTen(cos_sim, set_matrix, cos_constant, set_constant, random_nums):
+  avg_sims = np.zeros(10)
+  j = 0
+  while j < 10:
+    for i in random_nums:
+      new_cos_sim = cos_sim[i]
+      #sim.sort(reverse=True)
+      #sim = sim[::-1]
+      #print(sim)
+      new_set_sim = set_matrix[j]
+      #remove current song
+      new_cos_sim = np.delete(new_cos_sim, i)
+      new_set_sim = np.delete(new_set_sim, i)
+      new_cos_sim = cos_constant * new_cos_sim
+      new_set_sim = set_constant * new_set_sim
+      sim = np.add(new_cos_sim, new_set_sim)
+      sim = np.sort(sim)
+      #j = np.shape(sim)
+      #j = j[0] - 2 #don't want first b/c that is itself
+      k = np.shape(sim)
+      k = k[0] - 1
+      count = 0
+      cossim = []
+      while count < 10:
+        #cossim.append(sim[j])
+        #j = j - 1
+        #count += 1
+        avg_sims[count] += sim[k]
+        k = k - 1
+        count += 1
+    j += 1
+  avg_sims = avg_sims / (len(random_nums)*10)
+      #avg_sims.append(cossim)
     #cossim = []
     #while j < 10:
       #cossim.append(sim[j])
       #j += 1
     #avg_sims.append(cossim)
+  
+  sim_sum = 0
+  l = 0
+  size = np.shape(avg_sims)
+  while l < 10:
+    #print(avg_sims[l])
+    sim_sum += avg_sims[l]
+    l = l + 1
+  return sim_sum/10
+  
+  """
   print(avg_sims)
   top_avg = []
   k = 0
@@ -221,12 +247,12 @@ def evaluateTopTen(cos_sim, random_nums):
     k += 1
     current = 0
   return top_avg 
-
+  """
 
 
 if __name__ == '__main__':
   #stemming()
-
+  """
   not_stemmed = np.array(np.load('cosine_matrix.npy'))
   stemmed = np.array(np.load('cosine_matrix_stem.npy'))
   ns_avgs, s_avgs = evaluate_stem(not_stemmed, stemmed)
@@ -237,7 +263,7 @@ if __name__ == '__main__':
   print(s_avgs)
   print()
   printDifferences(ns_avgs, s_avgs)
-  
+  """
   """
   #original = np.array(np.load('cosine_matrix_stem.npy'))
   i = 1
@@ -273,4 +299,23 @@ if __name__ == '__main__':
   print(top_avg)
 
 """
-    
+  cs_matrix = np.load('cosine_matrix.npy')
+  set_matrix = np.load('set_matrix.npy')
+  random_nums = []
+  cs_shape = np.shape(cs_matrix)
+  print(cs_shape)
+  cs_size = cs_shape[0]
+  while len(random_nums) < 51:
+    random_num = random.randint(0, cs_size-1) 
+    if not random_num in random_nums:
+      random_nums.append(random_num)
+  
+  cs_weight = 100
+  set_weight = 0
+  while set_weight <= 100:
+    print("cs weight " + str(cs_weight))
+    print("set weight " + str(set_weight))
+    top_avg = evaluateTopTen(cs_matrix, set_matrix, cs_weight, set_weight, random_nums)
+    cs_weight -= 10
+    set_weight += 10
+    print("top 10 average is " + str(top_avg))

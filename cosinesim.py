@@ -38,12 +38,13 @@ city_to_words = {"New York":["new york", "party", "drink", "dance"],
 "Boston":["castle", "summer", "starlight", "sparkling"], 
 "Ithaca":["stars", "night", "sparkling", "town"], 
 "Austin":["daylight", "sunshine", "sunset"],
-"Charlotte":["bar", "beer"], "San Francisco":["flowers", "sunset"], 
+"Charlotte":["bar", "beer", "shopping", "sunshine"], 
+"San Francisco":["flowers", "sunset", "woods", "starlight"], 
 "Los Angeles":["love", "entertainment", "music", "hollywood", "star",
 "movie", "hippie"], 
-"Seattle":["rain", "coffee"], 
+"Seattle":["rain", "coffee", "rocks", "woods"], 
 "Miami":["beach", "summer", "sun", "swim"],
-"Nashville":["tennessee", "guitar"], "Chicago":["cold", "snow", "wind",
+"Nashville":["tennessee", "guitar", "country", "woods", "music"], "Chicago":["cold", "snow", "wind",
 "busy", "city"]}
 
 #create the vectorizer object
