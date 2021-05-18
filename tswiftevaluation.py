@@ -6,15 +6,26 @@ from nltk.stem import PorterStemmer
 import random
 
 def getVectorizer(df, stop_words):
+  """
+  Returns a tf-idf vectorizer with the corresponding parameters
+  df: int (minimum docuent frequency)
+  stop_words: boolean (whether to eliminate english stop words)
+  returns: tf-idf vectorizer
+  """
   if stop_words:
     return TfidfVectorizer(stop_words = 'english', min_df = df)
   else:
     return TfidfVectorizer( min_df = df)
 
-#original code from cosinesim.py edited to add stemming
+#original code from cosinesim.py (edited here to add stemming)
 def stemming(doc_freq, english):
+  """
+  Computes the cosine similarity matrix using stemmed words
+  doc_freq: int (minimum document frequency)
+  english: boolean
+  Returns: np array (cosine similarity matrix)
+  """
   df = pd.read_csv('final_taylor_swift_lyrics.tsv', sep='\t')
-
   df_dict = df.to_dict(orient = 'records')
 
   #song to index maps song titles to their index
@@ -38,9 +49,6 @@ def stemming(doc_freq, english):
 
   index_to_song = {index:song for song, index in song_to_index.items()} #https://dev.to/petercour/swap-keys-and-values-in-a-python-dictionary-1njn
   num_songs = len(song_to_index)
-  #print(song_to_index)
-
-  #print(type(df))
   vectorizer = getVectorizer(doc_freq, english)
 
   #code from 4300 class demo
@@ -50,9 +58,7 @@ def stemming(doc_freq, english):
   
   stemmer = PorterStemmer()
 
-  def getwords(lyric):
-    return [w.lower() for w in word_splitter.findall(lyric)]
-
+  #create a list of the lyrics in each song and stem them
   lyrics_list = []
   for i in index_dic:
     lyric = index_dic[i]
@@ -63,11 +69,12 @@ def stemming(doc_freq, english):
         lyric_str += l
     all_words = [w.lower() for w in word_splitter.findall(lyric_str)]
     stemmed_words = [stemmer.stem(w) for w in all_words]
-    #all_words = getwords(lyric_str)
     lyrics_list.append(" ".join(stemmed_words))
 
+  #create the tf-idf matrix
   tfidf_vec = vectorizer.fit_transform(lyrics_list).toarray()
 
+  #compute the cosine similarity between all of the songs
   cos_sim = np.zeros((num_songs,num_songs))
   i = 0
   while i < num_songs:
@@ -155,9 +162,6 @@ def evaluateDF(cos_sim, random_nums):
     total_avg += k
   return total_avg/len(random_nums)
 
-
-   
-
 def printDifferences(ns_avgs, s_avgs):
   """
   Prints the average differences between not stemmed and stemmed
@@ -187,72 +191,55 @@ def printDifferences(ns_avgs, s_avgs):
   print(sum_diff)
 
 def evaluateTopTen(cos_sim, set_matrix, cos_constant, set_constant, random_nums):
-  avg_sims = np.zeros(10)
+  """
+  Computes the average score for the top 10 words for the songs in random_nums
+  cos_sim: np array
+  set_matrix: np array
+  cos_constant: int
+  set_constant: int
+  random_nums: list
+  Returns: int
+  """
+  avg_sims = []
+  #loop through all of the cities
   j = 0
   while j < 10:
+    #loop through all of the songs
     for i in random_nums:
       new_cos_sim = cos_sim[i]
-      #sim.sort(reverse=True)
-      #sim = sim[::-1]
-      #print(sim)
       new_set_sim = set_matrix[j]
       #remove current song
       new_cos_sim = np.delete(new_cos_sim, i)
       new_set_sim = np.delete(new_set_sim, i)
-      new_cos_sim = cos_constant * new_cos_sim
-      new_set_sim = set_constant * new_set_sim
-      sim = np.add(new_cos_sim, new_set_sim)
-      sim = np.sort(sim)
-      #j = np.shape(sim)
-      #j = j[0] - 2 #don't want first b/c that is itself
-      k = np.shape(sim)
-      k = k[0] - 1
+      k = 0
+      sims_dic = {}
+      #combine the cosine sim and jaccard sim and sort from highest to smallest
+      while k < len(new_cos_sim):
+        cosine_similarity = new_cos_sim[k]
+        jaccard_similarity = new_set_sim[k]
+        sims_dic[k] = cosine_similarity*cos_constant + jaccard_similarity*set_constant
+        k += 1
+      total_sims_sorted = sorted(sims_dic.items(), key = lambda pair:pair[1], reverse = True)
+      avg_top_10 = 0
       count = 0
-      cossim = []
+      #compute the average score of the top 10
       while count < 10:
-        #cossim.append(sim[j])
-        #j = j - 1
-        #count += 1
-        avg_sims[count] += sim[k]
-        k = k - 1
+        avg_top_10 += total_sims_sorted[count][1]
         count += 1
+      avg_sims.append(avg_top_10/10)
     j += 1
-  avg_sims = avg_sims / (len(random_nums)*10)
-      #avg_sims.append(cossim)
-    #cossim = []
-    #while j < 10:
-      #cossim.append(sim[j])
-      #j += 1
-    #avg_sims.append(cossim)
-  
-  sim_sum = 0
-  l = 0
-  size = np.shape(avg_sims)
-  while l < 10:
-    #print(avg_sims[l])
-    sim_sum += avg_sims[l]
-    l = l + 1
-  return sim_sum/10
-  
-  """
-  print(avg_sims)
-  top_avg = []
-  k = 0
-  current = 0
-  while k < 10:
-    for m in avg_sims:
-      current += m[k]
-    current = current / 50
-    top_avg.append(current)
-    k += 1
-    current = 0
-  return top_avg 
-  """
+  avg_total = 0
+  #compute the average of all of the scores
+  for num in avg_sims:
+    avg_total += num
+
+  return avg_total/len(avg_sims)
 
 
 if __name__ == '__main__':
+  #call first if haven't stemmed the matrix before
   #stemming()
-  """
+  #compute the effects of stemming
   not_stemmed = np.array(np.load('cosine_matrix.npy'))
   stemmed = np.array(np.load('cosine_matrix_stem.npy'))
   ns_avgs, s_avgs = evaluate_stem(not_stemmed, stemmed)
@@ -263,8 +250,8 @@ if __name__ == '__main__':
   print(s_avgs)
   print()
   printDifferences(ns_avgs, s_avgs)
-  """
-  """
+
+  #compute the effects of changing the doc frequency
   #original = np.array(np.load('cosine_matrix_stem.npy'))
   i = 1
   #get 50 random songs to look at
@@ -285,8 +272,9 @@ if __name__ == '__main__':
     print("df = " + str(i))
     print(avg_cs)
     i += 1
-  """
-  """
+
+  #originally: looked at how the cosine similarity changed among the top 10
+  #songs (evaluate top ten later changed to measure jaccard similarity)
   cs_matrix = stemming(2, True)
   random_nums = []
   cs_shape = np.shape(cs_matrix)
@@ -298,18 +286,19 @@ if __name__ == '__main__':
   top_avg = evaluateTopTen(cs_matrix, random_nums)
   print(top_avg)
 
-"""
+  #compute the effects of adding the jaccard similarity
   cs_matrix = np.load('cosine_matrix.npy')
   set_matrix = np.load('set_matrix.npy')
   random_nums = []
   cs_shape = np.shape(cs_matrix)
-  print(cs_shape)
   cs_size = cs_shape[0]
+  #get 50 random songs
   while len(random_nums) < 51:
     random_num = random.randint(0, cs_size-1) 
     if not random_num in random_nums:
       random_nums.append(random_num)
   
+  #change the cosine sim and jaccard sim weights
   cs_weight = 100
   set_weight = 0
   while set_weight <= 100:

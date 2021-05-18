@@ -8,7 +8,6 @@ import numpy as np
 
 
 #information for the decision tree (dataset and helper functions)
-#taken from one of the evaluation.py datasets for now
 
 city_to_num = {0: "New York", 1:"Boston", 2:"Ithaca", 3:"Austin",
 4:"Charlotte", 5:"San Francisco", 6:"Los Angeles", 7:"Seattle", 8:"Miami",
@@ -111,12 +110,8 @@ train_set = [[1,1,1,0,1,1,3,0,3,0,0,0],
 
 tree = decisiontree.create_Tree(train_set, 2, questions, question_to_index, question_to_yes_answers)
 
-#trying the gui (not working yet)
+#setting up the gui
 window = tk.Tk()
-"""
-start_message = tk.Label(master = window, text = "Welcome! The game will start shortly")
-start_message.pack()
-"""
 
 window.geometry("1000x500")
 city_img = Image.open('pinned.jpg')
@@ -139,7 +134,6 @@ exit_frame.pack()
 #question_frame.grid(row=0, column=1)
 answer_frame.pack(pady=50)
 class TreeRecurse:
-
   def __init__(self, window, tree, questions_to_num, city_to_num):
     self.StartButton = tk.Button(master = answer_frame, text = "Start", command = self.start,
     font = ('Arialn'), bg = "black",height=3, width=10)
@@ -150,7 +144,7 @@ class TreeRecurse:
     # self.answer.pack()
     self.StartButton.pack()
 
-    #buttons to be used later on
+    #initialize buttons to be used later on (don't pack yet)
     self.YesButton = tk.Button(master = answer_frame, text = "Yes", command = self.getYesResult,
     font = ('Arial'), bg = "black",height=3, width=10)
     self.NoButton = tk.Button(master = answer_frame, text = "No", command = self.getNoResult,
@@ -161,7 +155,6 @@ class TreeRecurse:
     font = ('Arial'), bg = "black",height=3, width=10)
     self.EnterButton = tk.Button(master = answer_frame, text = "Enter", command = self.rank,
     font = ('Arial'), bg = "black",height=3, width=10)
-    #entry box to give the taylor swift song title
     self.Entry = tk.Entry(master = answer_frame)
     self.YesTSwift = tk.Button(master = answer_frame, text = "Yes please!", command = self.getDistance,
     font = ('Arial'), bg = "black",height=3, width=10)
@@ -228,18 +221,18 @@ class TreeRecurse:
     self.Entry.pack()
     self.EnterButton.pack()
 
+  #asks user to enter the distance to their new city
   def getDistance(self):
     self.YesTSwift.destroy()
     self.ExitButton.destroy()
     self.message.configure(text = "Please enter the distance (in hours) from your current city to your new city.",wraplength=800)
     self.EnterDistance.pack()
     self.DistanceEntry.pack()
-    #self.num_hours = self.EnterDistance.get()
 
+  #return top "max" relevant songs
   def getRecommendations(self, index, song, cos_sims_sorted, max):
     recommendations = ""
     count = 0
-    #display top "max" relevant songs
     for j in cos_sims_sorted:
       if count >= max:
         break
@@ -272,12 +265,11 @@ class TreeRecurse:
     sims_dic = {}
     i = 0
 
-    #sort the cosine similarities from highest to smallest
+    #combine jaccard and cosine sims and sort from highest to smallest
     while i < len(sims):
       cos_sim = sims[i]
       set_sim = set_sims[i]
-      #sims_dic[i] = cos_sim
-      sims_dic[i] = cos_sim*.75 + set_sim*.25
+      sims_dic[i] = cos_sim*.4 + set_sim*.6
       i += 1
     cos_sims_sorted = sorted(sims_dic.items(), key = lambda pair:pair[1], reverse = True)
 
@@ -290,69 +282,12 @@ class TreeRecurse:
       recommendations = self.getRecommendations(index, song, cos_sims_sorted, 20)
     else:
       recommendations = self.getRecommendations(index, song, cos_sims_sorted, 25)
-    #print("recommendations are " + recommendations)
-    # print(recommendations)
-    #displays recommendations to the user--need to fix formatting
     self.message.configure(text = recommendations)
     self.ExitOut = tk.Button(master = exit_frame, text = "Exit", command = window.quit, 
     font = ('Arial'), bg = "black",height=3, width=10)
     self.ExitOut.pack()
 
-
-
-
-"""
-def getResult(node, ans):
-  print(node.num)
-  print(ans)
-  print("yes options " + str(node.yes.num))
-  print("no options " + str(node.no.num))
-  global start_message
-  if node.yes == None and node.no == None:
-    print("in if")
-    city_result = city_to_num[node.num]
-    start_message.configure(text = "You should move to " + city_result + "!")
-  else:
-    #need to update the global tree variable to move to this node (don't think it's doing this)
-    global tree
-    print("tree 1 " + str(tree.num))
-    tree = node 
-    print("tree " + str(tree.num))
-    print("tree yes " + str(tree.yes.num))
-    print("tree no " + str(tree.no.num))
-    question_num = node.num
-    question = questions_to_num[question_num]
-    print(question)
-    start_message.configure(text = question)
-
-
-question = questions_to_num[tree.num]
-start_message = tk.Label(master = window, text = question)
-start_message.pack()
-yes_button = tk.Button(master = window, text = "Yes", command = partial(getResult, tree.yes, "Yes"))
-yes_button.pack()
-no_button = tk.Button(master = window, text = "No", command = partial(getResult, tree.no, "No"))
-no_button.pack()
-"""
-
 r = TreeRecurse(window, tree, questions_to_num, city_to_num)
 window.mainloop()
 
 
-"""
-def getResult(node):
-  print(node.num)
-  if node.yes == None and node.no == None:
-    city_result = city_to_num[node.num]
-    return city_result
-  question_num = node.num
-  user_response = input(questions_to_num[question_num]) #need to input y or n--will be different with the gui
-  valid = False
-  if user_response.lower() == 'y':
-    return getResult(node.yes)
-  else:
-    return getResult(node.no)
-
-result = getResult(tree)
-print(result)
-"""

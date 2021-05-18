@@ -117,7 +117,7 @@ def firstTraining():
       test_set = []
       train_set = []
       for i in total:
-        if i in train_rows
+        if i in train_rows:
           train_set.append(dataset[i])
         else:
           test_set.append(dataset[i])
