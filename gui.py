@@ -215,11 +215,15 @@ class TreeRecurse:
   #asks user to enter the taylor swift song name
   def begin(self):
     self.num_hours = self.EnterDistance.get()
-    self.EnterDistance.destroy()
-    self.DistanceEntry.destroy()
-    self.message.configure(text = "Please enter the name of your favorite Taylor Swift song and we will recommend a playlist of other Taylor Swift songs you will enjoy.",wraplength=800)
-    self.Entry.pack()
-    self.EnterButton.pack()
+    try:
+      float(self.num_hours)
+      self.EnterDistance.destroy()
+      self.DistanceEntry.destroy()
+      self.message.configure(text = "Please enter the name of your favorite Taylor Swift song and we will recommend a playlist of other Taylor Swift songs you will enjoy.",wraplength=800)
+      self.Entry.pack()
+      self.EnterButton.pack()
+    except ValueError:
+      self.message.configure(text = "Please enter a valid number. \n Please enter the distance (in hours) from your current city to your new city.",wraplength=800)
 
   #asks user to enter the distance to their new city
   def getDistance(self):
