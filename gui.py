@@ -259,7 +259,7 @@ class TreeRecurse:
     else:
       self.message.configure(text = "Sorry, that song is not in our database. Please check the spelling and/or enter a different Taylor Swift song, or exit the window.",wraplength=800)
     cos_sim_matrix = np.array(np.load('cosine_matrix.npy'))
-    set_sim_matrix = np.array(np.load("set_matrix.npy"))
+    set_sim_matrix = np.array(np.load("city_matrix.npy"))
     sims = cos_sim_matrix[index]
     set_sims = set_sim_matrix[self.city_num]
     sims_dic = {}
@@ -269,7 +269,7 @@ class TreeRecurse:
     while i < len(sims):
       cos_sim = sims[i]
       set_sim = set_sims[i]
-      sims_dic[i] = cos_sim*.4 + set_sim*.6
+      sims_dic[i] = cos_sim*.25 + set_sim*.75
       i += 1
     cos_sims_sorted = sorted(sims_dic.items(), key = lambda pair:pair[1], reverse = True)
 

@@ -1,5 +1,5 @@
 import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 import numpy as np
 import re
 from nltk.stem import PorterStemmer
@@ -48,7 +48,7 @@ city_to_words = {"New York":["new york", "party", "drink", "dance"],
 "busy", "city"]}
 
 #create the vectorizer object
-vectorizer = TfidfVectorizer(stop_words = 'english', min_df = 2)
+#vectorizer = TfidfVectorizer(stop_words = 'english', min_df = 2)
 
 #code from 4300 class demo
 word_splitter = re.compile(r"""
@@ -71,7 +71,27 @@ for i in index_dic:
   stemmed_words = [stemmer.stem(w) for w in all_words]
   lyrics_dic[i] = stemmed_words
   lyrics_list.append(" ".join(stemmed_words))
-  
+
+#create a list of the words in the cities and of the lyrics for each song
+lyrics_and_city_list = []
+for j in city_to_words:
+  words = city_to_words[j]
+  stemmed_words = [stemmer.stem(w) for w in words]
+  lyrics_and_city_list.append(" ".join(stemmed_words))
+
+for i in index_dic:
+  lyric = index_dic[i]
+  lyric_str = ""
+  for l in lyric:
+      l.lower()
+      lyric_str += " "
+      lyric_str += l
+  all_words = [w.lower() for w in word_splitter.findall(lyric_str)] #code from 4300 class demo
+  stemmed_words = [stemmer.stem(w) for w in all_words]
+  #lyrics_dic[i] = stemmed_words
+  lyrics_and_city_list.append(" ".join(stemmed_words))
+
+"""
 #remove words for each city that aren't in any lyrics
 city_words = {}
 for city in city_to_words:
@@ -92,7 +112,8 @@ for city in city_to_words:
       print("remove" + w)
 
 #print(city_words)
-
+"""
+"""
 #compute the jaccard similarity
 set_sim = np.zeros((len(city_words), num_songs))
 i = 0
@@ -119,8 +140,32 @@ while i < num_songs:
   i += 1
   
 np.save('set_matrix', set_sim)
+"""
 
+#create the vectorizer for the cosine similarity between cities and songs
+tf_vectorizer = CountVectorizer()
+city_sim = np.zeros((11, num_songs))
 
+tf_vec = tf_vectorizer.fit_transform(lyrics_and_city_list).toarray()
+
+#create the cosine similarity matrix for the cities and songs
+i = 0
+#cities are first 10 in tf_vec
+while i < 11:
+  #songs start at index 11
+  j = 11
+  while j < num_songs:
+    city = tf_vec[i]
+    song = tf_vec[j]
+    city_norm = np.linalg.norm(tf_vec[i])
+    song_norm = np.linalg.norm(tf_vec[j])
+    numerator = np.dot(city, song)
+    denominator = city_norm * song_norm
+    cosine_similarity = numerator/denominator
+    city_sim[i][j] = cosine_similarity
+    j += 1
+  i += 1
+np.save('city_matrix', city_sim)
 
 """
 #create the tf-idf matrix

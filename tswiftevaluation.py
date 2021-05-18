@@ -201,6 +201,7 @@ def evaluateTopTen(cos_sim, set_matrix, cos_constant, set_constant, random_nums)
   Returns: int
   """
   avg_sims = []
+  city_avg_sims = []
   #loop through all of the cities
   j = 0
   while j < 10:
@@ -213,30 +214,40 @@ def evaluateTopTen(cos_sim, set_matrix, cos_constant, set_constant, random_nums)
       new_set_sim = np.delete(new_set_sim, i)
       k = 0
       sims_dic = {}
+      city_sims_dic = {}
       #combine the cosine sim and jaccard sim and sort from highest to smallest
       while k < len(new_cos_sim):
         cosine_similarity = new_cos_sim[k]
         jaccard_similarity = new_set_sim[k]
         sims_dic[k] = cosine_similarity*cos_constant + jaccard_similarity*set_constant
+        city_sims_dic[k] = jaccard_similarity
         k += 1
       total_sims_sorted = sorted(sims_dic.items(), key = lambda pair:pair[1], reverse = True)
+      city_sims_sorted = sorted(city_sims_dic.items(), key = lambda pair:pair[1], reverse = True)
       avg_top_10 = 0
       count = 0
+      avg_top_10_city = 0
       #compute the average score of the top 10
       while count < 10:
         avg_top_10 += total_sims_sorted[count][1]
+        avg_top_10_city += city_sims_sorted[count][1]
         count += 1
       avg_sims.append(avg_top_10/10)
+      city_avg_sims.append(avg_top_10_city/10)
     j += 1
   avg_total = 0
+  city_avg_total = 0
   #compute the average of all of the scores
   for num in avg_sims:
     avg_total += num
+  for num2 in city_avg_sims:
+    city_avg_total += num2
 
-  return avg_total/len(avg_sims)
+  return avg_total/len(avg_sims), city_avg_total/len(city_avg_sims)
 
 
 if __name__ == '__main__':
+  """
   #call first if haven't stemmed the matrix before
   #stemming()
   #compute the effects of stemming
@@ -286,9 +297,10 @@ if __name__ == '__main__':
   top_avg = evaluateTopTen(cs_matrix, random_nums)
   print(top_avg)
 
+  """
   #compute the effects of adding the jaccard similarity
   cs_matrix = np.load('cosine_matrix.npy')
-  set_matrix = np.load('set_matrix.npy')
+  city_matrix = np.load('city_matrix.npy')
   random_nums = []
   cs_shape = np.shape(cs_matrix)
   cs_size = cs_shape[0]
@@ -304,7 +316,9 @@ if __name__ == '__main__':
   while set_weight <= 100:
     print("cs weight " + str(cs_weight))
     print("set weight " + str(set_weight))
-    top_avg = evaluateTopTen(cs_matrix, set_matrix, cs_weight, set_weight, random_nums)
+    top_avg, city_top_avg = evaluateTopTen(cs_matrix, city_matrix, cs_weight, set_weight, random_nums)
+    if set_weight == 100:
+      print("city top 10 average is " + str(city_top_avg))
     cs_weight -= 10
     set_weight += 10
     print("top 10 average is " + str(top_avg))
