@@ -651,34 +651,34 @@ def learningCurve():
     [1,1,1,2,0,2,2,0,5,0,0,10],[1,1,1,1,0,5,1,0,5,0,0,10]]
     questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34]
 
-    percent_correct = 0
+    percent_correct_test = 0
     j = 0
     while j < 1000:
     #create the tree on this dataset
       questions = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33]
       create_tree = decisiontree.create_Tree(train_set, 2, questions, question_to_index, question_to_yes_answers)
       #test the test set
-      percent, wrong = testSet(create_tree, test_set, question_to_yes_answers, question_to_index)
-      percent_correct += percent
+      percent_test, wrong = testSet(create_tree, test_set, question_to_yes_answers, question_to_index)
+      percent_correct_test += percent_test
       j += 1
     
-    percent_correct = percent_correct/1000
+    percent_correct_test = percent_correct_test/1000
     #output.write(str(i) + " percent correct: " + str(percent_correct) + " \n")
-    print("percent correct is " + str(percent_correct))
+    print("percent correct test is " + str(percent_correct_test))
     #print("wrong tests are " + str(wrong))
     print()
     i += 1
-  output.close()
+  #output.close()
 
 if __name__ == '__main__':
   """
   Run the evaluations
   """
-  #learningCurve()
+  learningCurve()
   #firstTraining()
   #secondTraining()
   #thirdTraining()
-  fourthTraining()
+  #fourthTraining()
   #i += 1
 
 #output_file.close()
