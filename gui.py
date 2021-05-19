@@ -273,7 +273,7 @@ class TreeRecurse:
     while i < len(sims):
       cos_sim = sims[i]
       set_sim = set_sims[i]
-      sims_dic[i] = cos_sim*.25 + set_sim*.75
+      sims_dic[i] = cos_sim*.4 + set_sim*.6
       i += 1
     cos_sims_sorted = sorted(sims_dic.items(), key = lambda pair:pair[1], reverse = True)
 
