@@ -278,14 +278,12 @@ class TreeRecurse:
     cos_sims_sorted = sorted(sims_dic.items(), key = lambda pair:pair[1], reverse = True)
 
     #changing number of songs recommended based on distance--need to fix formatting
-    if int(self.num_hours) < 2:
+    if int(self.num_hours) <= 5:
       recommendations = self.getRecommendations(index, song, cos_sims_sorted, 10)
-    elif int(self.num_hours) < 5:
+    elif int(self.num_hours) <= 10:
       recommendations = self.getRecommendations(index, song, cos_sims_sorted, 15)
-    elif int(self.num_hours) < 10:
-      recommendations = self.getRecommendations(index, song, cos_sims_sorted, 20)
     else:
-      recommendations = self.getRecommendations(index, song, cos_sims_sorted, 25)
+      recommendations = self.getRecommendations(index, song, cos_sims_sorted, 20)
     self.message.configure(text = recommendations)
     self.ExitOut = tk.Button(master = exit_frame, text = "Exit", command = window.quit, 
     font = ('Arial'), bg = "black",height=3, width=10)
