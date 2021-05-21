@@ -107,12 +107,12 @@ for city in city_to_words:
         city_words[city].append(w)
       else:
         city_words[city] = [w]
-    else:
 
 #create the vectorizer for the cosine similarity between cities and songs
 tf_vectorizer = CountVectorizer()
 city_sim = np.zeros((11, num_songs))
 
+vectorizer = TfidfVectorizer(min_df = 2, stop_words = 'english')
 tf_vec = tf_vectorizer.fit_transform(lyrics_and_city_list).toarray()
 
 #create the cosine similarity matrix for the cities and songs
