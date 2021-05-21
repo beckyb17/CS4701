@@ -7,6 +7,7 @@ from cosinesim import song_to_index, index_to_song,index_to_song_org
 import numpy as np
 
 
+
 #information for the decision tree (dataset and helper functions)
 
 city_to_num = {0: "New York", 1:"Boston", 2:"Ithaca", 3:"Austin",
@@ -129,6 +130,7 @@ answer_frame = tk.Frame(window)
 songlst_frame.pack(pady=(40,0))
 
 question_frame.pack(pady=(40,10))
+
 pic_frame.pack()
 exit_frame.pack()
 #question_frame.grid(row=0, column=1)
@@ -140,6 +142,7 @@ class TreeRecurse:
     self.node = tree
     self.message = tk.Label(master = question_frame, text = "Find your new city!", font = ('Arial, 25'), bg = "white")
     self.message.pack()
+    
     # self.answer = tk.Label(master = question_frame, text = "Find your new city!", font=('Helvetica 18 bold'), bg = "white")
     # self.answer.pack()
     self.StartButton.pack()
@@ -284,7 +287,19 @@ class TreeRecurse:
       recommendations = self.getRecommendations(index, song, cos_sims_sorted, 15)
     else:
       recommendations = self.getRecommendations(index, song, cos_sims_sorted, 20)
-    self.message.configure(text = recommendations)
+    #self.message.configure(text = recommendations)
+    self.message.destroy()
+    canvas = tk.Canvas(window)
+    #canvas.pack(side=tk.LEFT)
+    scrollbar = tk.Scrollbar(question_frame,command=canvas.yview)
+    scrollbar.pack( side = tk.RIGHT)
+    canvas.configure(yscrollcommand = scrollbar.set)
+    #list_frame = tk.Frame(canvas)
+    self.song_list = tk.Label(master = question_frame)
+    self.song_list.pack()
+    self.song_list.configure(text = recommendations)
+    scrollbar.configure(command=canvas.yview)
+    canvas.configure(scrollregion=canvas.bbox("all"))
     self.ExitOut = tk.Button(master = exit_frame, text = "Exit", command = window.quit, 
     font = ('Arial'), bg = "black",height=3, width=10)
     self.ExitOut.pack()
