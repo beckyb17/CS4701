@@ -91,7 +91,7 @@ for i in index_dic:
   #lyrics_dic[i] = stemmed_words
   lyrics_and_city_list.append(" ".join(stemmed_words))
 
-"""
+
 #remove words for each city that aren't in any lyrics
 city_words = {}
 for city in city_to_words:
@@ -101,7 +101,6 @@ for city in city_to_words:
     for lst in lyrics_list:
       if new_w in lst:
         in_lst = True
-        #print(lst)
         break
     if in_lst:
       if city in city_words:
@@ -109,38 +108,6 @@ for city in city_to_words:
       else:
         city_words[city] = [w]
     else:
-      print("remove" + w)
-
-#print(city_words)
-"""
-"""
-#compute the jaccard similarity
-set_sim = np.zeros((len(city_words), num_songs))
-i = 0
-while i < num_songs:
-  #iterate through each song
-  #index is the index of the current city
-  index = 0
-  for city in city_words:
-    #iterate through the words in each city
-    count = 0
-    #convert into set to compute jaccard
-    lyric_set = list(set(lyrics_list[i]))
-    for word in city_words[city]:
-      #update count if that word is in the song's lyrics
-      if word in lyrics_list[i]:
-        count += 1
-    numerator = count
-    #take the union of the two sets
-    for w in city_words:
-      lyric_set.append(w)
-    denominator = len(set(lyric_set))
-    set_sim[index][i] = numerator/denominator
-    index += 1
-  i += 1
-  
-np.save('set_matrix', set_sim)
-"""
 
 #create the vectorizer for the cosine similarity between cities and songs
 tf_vectorizer = CountVectorizer()
@@ -167,7 +134,7 @@ while i < 11:
   i += 1
 np.save('city_matrix', city_sim)
 
-"""
+
 #create the tf-idf matrix
 tfidf_vec = vectorizer.fit_transform(lyrics_list).toarray()
 
@@ -195,4 +162,3 @@ while i < num_songs:
 np.save('cosine_matrix', cos_sim)
 
 
-"""

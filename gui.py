@@ -6,10 +6,7 @@ from PIL import Image, ImageTk
 from cosinesim import song_to_index, index_to_song,index_to_song_org
 import numpy as np
 
-
-
 #information for the decision tree (dataset and helper functions)
-
 city_to_num = {0: "New York", 1:"Boston", 2:"Ithaca", 3:"Austin",
 4:"Charlotte", 5:"San Francisco", 6:"Los Angeles", 7:"Seattle", 8:"Miami",
 9:"Nashville", 10:"Chicago"}
@@ -168,7 +165,6 @@ class TreeRecurse:
 
   def getYesResult(self):
     #"recurses" through yes side of tree
-    print("in yes")
     if self.node.yes.yes == None and self.node.yes.no == None:
       self.city_num = self.node.yes.num
       city_result = city_to_num[self.node.yes.num]
@@ -183,7 +179,6 @@ class TreeRecurse:
 
   def getNoResult(self):
     #"recurses" through no side of tree
-    print("in no")
     if self.node.no.yes == None and self.node.no.no == None:
       # boston_img = Image.open('boston.jpg')
       # boston = ImageTk.PhotoImage(boston_img)
@@ -280,7 +275,7 @@ class TreeRecurse:
       i += 1
     cos_sims_sorted = sorted(sims_dic.items(), key = lambda pair:pair[1], reverse = True)
 
-    #changing number of songs recommended based on distance--need to fix formatting
+    #changing number of songs recommended based on distance
     if int(self.num_hours) <= 5:
       recommendations = self.getRecommendations(index, song, cos_sims_sorted, 10)
     elif int(self.num_hours) <= 10:

@@ -154,19 +154,3 @@ def create_Tree(dataset, parent_gi, questions, question_to_index, question_to_ye
   false_side = create_Tree(false_set, best_gi, questions, question_to_index, question_to_yes_answers)
 
   return TreeNode(best_q, true_side, false_side)
-
-"""
-def getResult(node):
-
-  if node.yes == None and node.no == None:
-    city_result = city_to_num[node.num]
-    return city_result
-  question_num = node.num
-  user_response = input(questions_to_num[question_num]) #need to input y or n--will be different with the gui
-  valid = False
-  if user_response.lower() == 'y':
-    return getResult(node.yes)
-  else:
-    return getResult(node.no)
-
-"""

@@ -240,7 +240,7 @@ def evaluateTopTen(cos_sim, set_matrix, cos_constant, set_constant, random_nums)
 if __name__ == '__main__':
 
   #call first if haven't stemmed the matrix before
-  #stemming()
+  stemming()
   #compute the effects of stemming
   not_stemmed = np.array(np.load('cosine_matrix.npy'))
   stemmed = np.array(np.load('cosine_matrix_stem.npy'))
