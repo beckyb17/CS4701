@@ -50,7 +50,7 @@ city_to_words = {"New York":["new york", "party", "drink", "dance"],
 #create the vectorizer object
 #vectorizer = TfidfVectorizer(stop_words = 'english', min_df = 2)
 
-#code from 4300 class demo
+#word_splitter is from cs 4300 class demo
 word_splitter = re.compile(r"""
   (\w+)
   """, re.VERBOSE)
